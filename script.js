@@ -7,16 +7,21 @@ document.getElementById("recordForm").addEventListener("submit", async (e) => {
   const formData = new URLSearchParams();
   formData.append("number", number);
 
-  await fetch(API_URL, {
-    method: "POST",
-    body: formData,
-    headers: {
-      "Content-Type": "application/x-www-form-urlencoded"
-    }
-  });
+  try {
+    await fetch(API_URL, {
+      method: "POST",
+      body: formData,
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded"
+      }
+    });
 
-  document.getElementById("number").value = "";
-  loadRecords();
+    document.getElementById("number").value = "";
+    loadRecords();
+  } catch (error) {
+    alert("❌ 無法送出資料，請確認 Web App 是否公開部署");
+    console.error(error);
+  }
 });
 
 async function loadRecords() {
