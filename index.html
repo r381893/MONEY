@@ -7,28 +7,29 @@
   <style>
     body {
       font-family: 'Noto Sans TC', sans-serif;
+      background: #f7f7fc;
       padding: 2em;
-      background: #f9f9ff;
     }
     textarea {
       width: 100%;
       height: 80px;
       padding: 10px;
+      font-size: 1em;
     }
     button {
       margin-top: 10px;
-      padding: 5px 15px;
+      padding: 10px 20px;
       font-size: 1em;
     }
     ul {
       list-style: none;
-      padding-left: 0;
+      padding: 0;
     }
     li {
-      margin-bottom: 10px;
-      background: #fff;
+      margin: 8px 0;
       padding: 10px;
-      border-left: 5px solid #6c63ff;
+      background: #fff;
+      border-left: 4px solid #6c63ff;
       box-shadow: 0 1px 3px rgba(0,0,0,0.1);
     }
   </style>
@@ -36,7 +37,7 @@
 <body>
   <h1>📋 我的紀錄板</h1>
   <textarea id="noteInput" placeholder="輸入紀錄..."></textarea><br>
-  <button id="saveBtn">儲存紀錄</button>
+  <button onclick="saveNote()">儲存紀錄</button>
 
   <h2>🕘 歷史紀錄</h2>
   <ul id="recordList">讀取中...</ul>
