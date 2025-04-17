@@ -2,29 +2,32 @@
 <html lang="zh-TW">
 <head>
   <meta charset="UTF-8">
-  <title>📋 我的 JSONP 紀錄板</title>
-  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>📋 我的紀錄板 (JSONP 版)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
-    body { font-family:'Noto Sans TC',sans-serif; background:#f9f9ff; padding:2rem; }
-    textarea { width:100%; height:100px; padding:10px; font-size:1rem; }
-    button { margin-top:10px; padding:10px 20px; font-size:1rem; background:#6c63ff; color:#fff; border:none; border-radius:5px; }
-    ul { list-style:none; padding:0; }
-    li { margin:10px 0; padding:10px; background:#fff; border-left:5px solid #6c63ff; box-shadow:0 1px 3px rgba(0,0,0,0.1); }
+    body { font-family: 'Noto Sans TC', sans-serif; background: #f9f9ff; padding: 2rem; }
+    textarea { width: 100%; height: 100px; padding: 10px; font-size: 1rem; }
+    button { margin-top: 10px; padding: 10px 20px; font-size: 1rem;
+             background: #6c63ff; color: #fff; border: none; border-radius: 5px; cursor: pointer; }
+    h1,h2 { color: #333; }
+    ul { list-style: none; padding: 0; }
+    li { background: #fff; padding: 10px; margin: 10px 0;
+         border-left: 5px solid #6c63ff; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
   </style>
 </head>
 <body>
   <h1>📋 我的紀錄板 (JSONP 版)</h1>
   <textarea id="noteInput" placeholder="請輸入紀錄..."></textarea><br>
-  <button onclick="saveNote()">儲存紀錄</button>
+  <button id="saveBtn">儲存紀錄</button>
 
   <h2>🕘 歷史紀錄</h2>
   <ul id="recordList">載入中...</ul>
 
   <script>
-    // 你的 Web App URL
-    const apiUrl = 'https://script.google.com/macros/s/AKfycbxWYBbOsFTxwrArwQLNOqMJcWOMHHe-fqBGtqXgcvy2o7dMyShe2PLS5AL8jKs1WesD/exec';
+    // ← 替換成你最新部署的 Web App URL
+    const API = 'https://script.google.com/macros/s/AKfycbxWYBbOsFTxwrArwQLNOqMJcWOMHHe-fqBGtqXgcvy2o7dMyShe2PLS5AL8jKs1WesD/exec';
 
-    // JSONP callback：接收資料並渲染列表
+    // JSONP callback：把後端回傳的陣列渲染到 <ul>
     function renderNotes(data) {
       const ul = document.getElementById('recordList');
       ul.innerHTML = '';
@@ -35,31 +38,31 @@
       });
     }
 
-    // 讀取歷史紀錄：動態插入 <script>
+    // 讀取資料：動態插 <script> 呼叫 doGet
     function loadNotes() {
       const s = document.createElement('script');
-      s.src = apiUrl + '?callback=renderNotes';
+      s.src = API + '?callback=renderNotes';
       document.body.appendChild(s);
     }
 
-    // 儲存一筆紀錄：content 放進 URL 參數、callback 指向 saved()
-    function saveNote() {
-      const txt = document.getElementById('noteInput').value.trim();
-      if (!txt) return alert('請輸入內容');
-      const s = document.createElement('script');
-      s.src = apiUrl
-             + '?callback=afterSave'
-             + '&content=' + encodeURIComponent(txt);
-      document.body.appendChild(s);
-    }
-
-    // 儲存完成後再重新載入列表
-    function afterSave(resp) {
+    // JSONP callback：寫入完成後呼叫，清空輸入並重載列表
+    function afterSave() {
       document.getElementById('noteInput').value = '';
       loadNotes();
     }
 
-    // 頁面一打開就載入
+    // 儲存一筆：把 content 丟到 URL，callback 設 afterSave
+    document.getElementById('saveBtn').onclick = () => {
+      const txt = document.getElementById('noteInput').value.trim();
+      if (!txt) return alert('請輸入內容');
+      const s = document.createElement('script');
+      s.src = API
+            + '?callback=afterSave'
+            + '&content=' + encodeURIComponent(txt);
+      document.body.appendChild(s);
+    };
+
+    // 頁面載入時先讀一次
     window.onload = loadNotes;
   </script>
 </body>
