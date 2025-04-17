@@ -2,7 +2,7 @@ const apiUrl = 'https://script.google.com/macros/s/AKfycbxWYBbOsFTxwrArwQLNOqMJc
 
 function loadNotes() {
   fetch(apiUrl)
-    .then(res => res.json())
+    .then(response => response.json())
     .then(data => {
       const list = document.getElementById("recordList");
       list.innerHTML = "";
@@ -12,27 +12,31 @@ function loadNotes() {
         list.appendChild(li);
       });
     })
-    .catch(err => {
+    .catch(error => {
+      console.error("讀取失敗：", error);
       document.getElementById("recordList").innerHTML = "❌ 無法讀取紀錄，請檢查後端設定";
-      console.error("讀取失敗", err);
     });
 }
 
 function saveNote() {
   const input = document.getElementById("noteInput").value.trim();
-  if (!input) return alert("請輸入內容！");
+  if (!input) {
+    alert("請輸入內容！");
+    return;
+  }
+
   fetch(apiUrl, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ content: input })
   })
     .then(() => {
       document.getElementById("noteInput").value = "";
       loadNotes();
     })
-    .catch(err => {
-      alert("❌ 儲存失敗！");
-      console.error("儲存錯誤", err);
+    .catch(error => {
+      console.error("儲存失敗：", error);
+      alert("❌ 無法儲存紀錄，請檢查後端設定！");
     });
 }
 
