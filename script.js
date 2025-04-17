@@ -1,4 +1,4 @@
-const apiUrl = 'https://script.google.com/macros/s/AKfycbySLXDED1lwY6Lzagv1KoFpXQECHjmh4aBpLMWhiSsPk3kej8FGRvDqWVAQkVHdYzHh/exec';
+const apiUrl = 'https://script.google.com/macros/s/AKfycbxWYBbOsFTxwrArwQLNOqMJcWOMHHe-fqBGtqXgcvy2o7dMyShe2PLS5AL8jKs1WesD/exec';
 
 function loadNotes() {
   fetch(apiUrl)
