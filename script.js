@@ -1,7 +1,5 @@
 const apiUrl = 'https://script.google.com/macros/s/AKfycbySLXDED1lwY6Lzagv1KoFpXQECHjmh4aBpLMWhiSsPk3kej8FGRvDqWVAQkVHdYzHh/exec';
 
-document.getElementById("saveBtn").addEventListener("click", saveNote);
-
 function loadNotes() {
   fetch(apiUrl)
     .then(res => res.json())
@@ -33,7 +31,7 @@ function saveNote() {
       loadNotes();
     })
     .catch(err => {
-      alert("❌ 儲存失敗，請檢查後端設定！");
+      alert("❌ 儲存失敗！");
       console.error("儲存錯誤", err);
     });
 }
