@@ -1,4 +1,5 @@
-const apiUrl = 'https://script.google.com/macros/s/AKfycbzv2kjdSR5988Ge4sPKIJJBHRhXNVg5cbh6s2sZj77O0GoUrs7xboz19Qe4ZSDKMPgC/exec';
+const apiUrl = 'https://script.google.com/macros/s/AKfycbySLXDED1lwY6Lzagv1KoFpXQECHjmh4aBpLMWhiSsPk3kej8FGRvDqWVAQkVHdYzHh/exec
+';
 
 document.getElementById("saveBtn").addEventListener("click", saveNote);
 
