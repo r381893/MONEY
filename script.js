@@ -4,16 +4,19 @@ document.getElementById("recordForm").addEventListener("submit", async (e) => {
   e.preventDefault();
   const number = document.getElementById("number").value;
 
+  const formData = new URLSearchParams();
+  formData.append("number", number);
+
   await fetch(API_URL, {
     method: "POST",
-    body: JSON.stringify({ number }),
+    body: formData,
     headers: {
-      "Content-Type": "application/json",
-    },
+      "Content-Type": "application/x-www-form-urlencoded"
+    }
   });
 
   document.getElementById("number").value = "";
-  loadRecords(); // 重新載入紀錄
+  loadRecords();
 });
 
 async function loadRecords() {
