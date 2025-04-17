@@ -1,5 +1,4 @@
-const apiUrl = 'https://script.google.com/macros/s/AKfycbySLXDED1lwY6Lzagv1KoFpXQECHjmh4aBpLMWhiSsPk3kej8FGRvDqWVAQkVHdYzHh/exec
-';
+const apiUrl = 'https://script.google.com/macros/s/AKfycbySLXDED1lwY6Lzagv1KoFpXQECHjmh4aBpLMWhiSsPk3kej8FGRvDqWVAQkVHdYzHh/exec';
 
 document.getElementById("saveBtn").addEventListener("click", saveNote);
 
@@ -16,8 +15,8 @@ function loadNotes() {
       });
     })
     .catch(err => {
-      document.getElementById("recordList").innerHTML = "❌ 無法讀取紀錄，請檢查後端。";
-      console.error(err);
+      document.getElementById("recordList").innerHTML = "❌ 無法讀取紀錄，請檢查後端設定";
+      console.error("讀取失敗", err);
     });
 }
 
@@ -29,14 +28,14 @@ function saveNote() {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ content: input })
   })
-  .then(() => {
-    document.getElementById("noteInput").value = "";
-    loadNotes();
-  })
-  .catch(err => {
-    alert("❌ 儲存失敗！");
-    console.error(err);
-  });
+    .then(() => {
+      document.getElementById("noteInput").value = "";
+      loadNotes();
+    })
+    .catch(err => {
+      alert("❌ 儲存失敗，請檢查後端設定！");
+      console.error("儲存錯誤", err);
+    });
 }
 
 loadNotes();
