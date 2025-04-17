@@ -1,68 +1,48 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
-  <meta charset="UTF-8" />
-  <title>紀錄表</title>
-  <style>
-    body {
-      font-family: 'Noto Sans TC', sans-serif;
-      background: #fffaf5;
-      padding: 2rem;
-    }
-    h1 {
-      font-size: 2em;
-      color: #d6336c;
-    }
-    label, input, button {
-      font-size: 1.2em;
-    }
-    ul {
-      padding-left: 1em;
-    }
-  </style>
+  <meta charset="UTF-8">
+  <title>📋 簡易紀錄板</title>
 </head>
 <body>
-  <h1>📋 紀錄表</h1>
+  <h1>📋 我的紀錄板</h1>
+  <textarea id="noteInput" rows="4" cols="40" placeholder="輸入你的紀錄..."></textarea><br>
+  <button onclick="saveNote()">儲存紀錄</button>
 
-  <form id="recordForm">
-    <label for="number">輸入數字：</label>
-    <input type="number" id="number" required />
-    <button type="submit">送出</button>
-  </form>
+  <h2>歷史紀錄</h2>
+  <ul id="recordList">載入中...</ul>
 
-  <h2>📜 歷史紀錄</h2>
-  <ul id="recordList"></ul>
-
-  <!-- ✅ JS 放這裡，不要用外部 script -->
   <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      const form = document.getElementById("recordForm");
-      const list = document.getElementById("recordList");
+    const apiUrl = 'https://script.google.com/macros/s/👉貼上你的Apps Script網址👈/exec';
 
-      form.addEventListener("submit", (e) => {
-        e.preventDefault();
-        const number = document.getElementById("number").value;
-        google.script.run
-          .withSuccessHandler(() => {
-            document.getElementById("number").value = "";
-            loadRecords();
-          })
-          .saveRecord(number);
-      });
-
-      function loadRecords() {
-        google.script.run.withSuccessHandler((data) => {
+    function loadNotes() {
+      fetch(apiUrl)
+        .then(res => res.json())
+        .then(data => {
+          const list = document.getElementById("recordList");
           list.innerHTML = "";
-          data.reverse().forEach((item) => {
+          data.forEach(note => {
             const li = document.createElement("li");
-            li.textContent = `${item.date}（${item.day}）：${item.number}`;
+            li.textContent = `[${note.date} ${note.time}] ${note.content}`;
             list.appendChild(li);
           });
-        }).getRecords();
-      }
+        });
+    }
 
-      loadRecords();
-    });
+    function saveNote() {
+      const input = document.getElementById("noteInput").value.trim();
+      if (!input) return alert("請輸入紀錄內容！");
+      fetch(apiUrl, {
+        method: 'POST',
+        body: JSON.stringify({ content: input }),
+        headers: { 'Content-Type': 'application/json' }
+      }).then(() => {
+        document.getElementById("noteInput").value = "";
+        loadNotes();
+      });
+    }
+
+    loadNotes(); // 頁面載入時執行
   </script>
 </body>
 </html>
