@@ -2,22 +2,28 @@
 <html lang="zh-TW">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>紀錄表</title>
-  <link rel="stylesheet" href="style.css">
+  <script src="script.js"></script>
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 20px;
+      background: #fefaf3;
+    }
+    h1 { color: #d6336c; }
+    label, input, button { font-size: 1.2em; }
+    ul { padding-left: 1em; }
+  </style>
 </head>
 <body>
-  <h1>📋 今日紀錄表</h1>
-
+  <h1>📋 紀錄表</h1>
   <form id="recordForm">
     <label for="number">輸入數字：</label>
     <input type="number" id="number" required />
-    <button type="submit">送出紀錄</button>
+    <button type="submit">送出</button>
   </form>
 
-  <h2>🕓 紀錄歷史</h2>
+  <h2>📜 歷史紀錄</h2>
   <ul id="recordList"></ul>
-
-  <script src="script.js"></script>
 </body>
 </html>
