@@ -3,20 +3,19 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>維修記錄牆 v5</title>
+  <title>維修記錄牆 v7</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <header>
-    <h1>維修記錄牆</h1>
-    <p>九大類別 ➜ 子項目 ➜ 圖片、狀態、備註可編輯</p>
+    <h1>維修記錄牆 v7</h1>
+    <p>支援圖片顯示、自動儲存、卡片可編輯</p>
   </header>
 
   <div class="board-container">
     <div class="board" id="board"></div>
   </div>
 
-  <!-- 彈出表單 -->
   <div class="modal" id="modal">
     <div class="modal-content">
       <h2>➕ 新增維修紀錄</h2>
@@ -33,7 +32,7 @@
           </select>
         </label>
         <label>說明：<textarea id="description" rows="3"></textarea></label>
-        <label>圖片網址（Google Drive 請用 uc?id 格式）：<input type="text" id="image"></label>
+        <label>圖片網址：<input type="text" id="image"></label>
         <div class="btn-group">
           <button type="submit">新增</button>
           <button type="button" onclick="closeModal()">取消</button>
@@ -42,6 +41,125 @@
     </div>
   </div>
 
-  <script src="script.js"></script>
+  <script>
+    const categories = [
+      "冷氣", "天車", "空壓機", "消防系統", "水系統",
+      "工作母機", "堆高機與升空車", "一般鉗工", "電銲"
+    ];
+
+    const board = document.getElementById('board');
+    const localKey = 'maintenanceCards';
+
+    categories.forEach(cat => {
+      const column = document.createElement('div');
+      column.className = 'column';
+      column.id = cat;
+      column.innerHTML = `
+        <h2>${cat}</h2>
+        <button class="add-btn" onclick="openModal('${cat}')">➕ 新增紀錄</button>
+        <div class="card-container"></div>
+      `;
+      board.appendChild(column);
+    });
+
+    function openModal(category) {
+      document.getElementById('targetCategory').value = category;
+      document.getElementById('modal').style.display = 'block';
+      document.getElementById('date').valueAsDate = new Date();
+    }
+
+    function closeModal() {
+      document.getElementById('modal').style.display = 'none';
+      document.getElementById('recordForm').reset();
+    }
+
+    function transformDriveURL(url) {
+      const match = url.match(/\/d\/(.*?)\//);
+      return match ? `https://drive.google.com/uc?id=${match[1]}` : url;
+    }
+
+    function saveCards() {
+      const allCards = {};
+      categories.forEach(cat => {
+        const cards = document.querySelectorAll(`#${cat} .card-container .card`);
+        allCards[cat] = Array.from(cards).map(card => ({
+          html: card.innerHTML
+        }));
+      });
+      localStorage.setItem(localKey, JSON.stringify(allCards));
+    }
+
+    function loadCards() {
+      const saved = JSON.parse(localStorage.getItem(localKey) || '{}');
+      categories.forEach(cat => {
+        const container = document.querySelector(`#${cat} .card-container`);
+        if (saved[cat]) {
+          saved[cat].forEach(c => {
+            const card = document.createElement('div');
+            card.className = 'card';
+            card.innerHTML = c.html;
+            container.appendChild(card);
+          });
+        }
+      });
+    }
+
+    document.getElementById('recordForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const category = document.getElementById('targetCategory').value;
+      const item = document.getElementById('item').value;
+      const date = document.getElementById('date').value;
+      const location = document.getElementById('location').value;
+      const person = document.getElementById('person').value;
+      const status = document.getElementById('status').value;
+      const description = document.getElementById('description').value;
+      let image = transformDriveURL(document.getElementById('image').value);
+
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.innerHTML = `
+        <p><strong>項目：</strong><span contenteditable="true">${item}</span></p>
+        <p><strong>日期：</strong><span contenteditable="true">${date}</span></p>
+        <p><strong>地點：</strong><span contenteditable="true">${location}</span></p>
+        <p><strong>人員：</strong><span contenteditable="true">${person}</span></p>
+        <p><strong>狀態：</strong><span contenteditable="true">${status}</span></p>
+        <p><strong>說明：</strong><span contenteditable="true">${description}</span></p>
+        ${image ? `<img src="${image}" alt="圖片">` : ''}
+      `;
+
+      const container = document.querySelector(`#${category} .card-container`);
+      container.prepend(card);
+      saveCards();
+      closeModal();
+    });
+
+    // 自動儲存 on edit
+    document.addEventListener('input', () => {
+      saveCards();
+    });
+
+    loadCards();
+  </script>
+  <style>
+    body {
+      margin: 0; font-family: 'Noto Sans TC', sans-serif; background: #eeeeee;
+    }
+    header { text-align: center; background: #fff; padding: 1em; box-shadow: 0 2px 6px rgba(0,0,0,0.05); }
+    .board-container { overflow-x: auto; padding: 1em; }
+    .board { display: flex; gap: 1em; min-width: 1000px; }
+    .column { background: #fff; border-radius: 10px; padding: 1em; min-width: 300px; flex-shrink: 0; box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
+    .add-btn { margin: 0.5em auto 1em auto; padding: 0.5em; background: #009688; color: #fff; border: none; border-radius: 6px; cursor: pointer; width: 90%; }
+    .card { background: #fdfdfd; border-radius: 10px; padding: 0.8em; box-shadow: 0 1px 4px rgba(0,0,0,0.1); margin-bottom: 1em; }
+    .card img { width: 100%; max-height: 150px; object-fit: cover; border-radius: 5px; margin-top: 0.5em; }
+    .card [contenteditable] { outline: 1px dashed transparent; padding: 0 4px; border-radius: 4px; }
+    .card [contenteditable]:focus { outline-color: #009688; background: #e0f2f1; }
+    .modal { display: none; position: fixed; z-index: 10; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); }
+    .modal-content { background: #fff; padding: 1.5em; max-width: 500px; margin: 8vh auto; border-radius: 10px; }
+    .modal-content label { display: block; margin: 0.6em 0; }
+    .modal-content input, textarea, select { width: 100%; padding: 0.4em; margin-top: 0.2em; border-radius: 5px; border: 1px solid #ccc; }
+    .btn-group { text-align: right; margin-top: 1em; }
+    .btn-group button { margin-left: 0.5em; padding: 0.4em 1em; border: none; border-radius: 5px; background-color: #00796b; color: white; cursor: pointer; }
+  </style>
 </body>
 </html>
