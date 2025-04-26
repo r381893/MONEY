@@ -156,7 +156,7 @@ function renderCards() {
         <div><strong>人物：</strong>${card.person}</div>
       </div>
       <button onclick="editCard(${card.id})">✏️</button>
-      <button style="right: 30px;" onclick="deleteCard(${card.id})">🗑️</button>
+      <button style="right: 5px;" onclick="deleteCard(${card.id})">🗑️</button>
     `;
     const column = document.querySelector(`.column[data-category="${card.category}"] .cardList`);
     if (column) column.appendChild(cardEl);
