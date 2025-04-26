@@ -1,39 +1,38 @@
-<!DOCTYPE html>
-<html lang="zh-TW">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>工作記錄牆</title>
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-  <header>
-    <h1>🛠️ 工作記錄牆</h1>
-    <button id="addCardBtn">➕ 新增工作</button>
-  </header>
+<header>
+  <h1>🛠️ 工作記錄牆</h1>
+  <div id="categoryList">
+    <!-- 六大類按鈕放這裡 -->
+  </div>
+  <button id="addCardBtn">➕ 新增細項</button>
+</header>
 
-  <section id="cardContainer"></section>
+<section id="cardContainer">
+  <!-- 各類別的細項列表 -->
+</section>
 
-  <!-- 新增/編輯卡片的表單 -->
-  <div id="cardFormContainer" class="hidden">
-    <div class="cardForm">
-      <h2 id="formTitle">新增工作</h2>
-      <label>
-        分類：<input type="text" id="cardCategory" placeholder="例如：冷氣維修">
-      </label>
-      <label>
-        標題：<input type="text" id="cardTitle" placeholder="例如：冷氣漏水處理">
-      </label>
-      <label>
-        細項內容：<textarea id="cardDetails" placeholder="詳細工作內容..."></textarea>
-      </label>
-      <div class="formButtons">
-        <button id="saveCardBtn">✅ 儲存</button>
-        <button id="cancelCardBtn">❌ 取消</button>
-      </div>
+<!-- 新增/編輯細項的表單 -->
+<div id="cardFormContainer" class="hidden">
+  <div class="cardForm">
+    <h2 id="formTitle">新增細項</h2>
+    <label> 時間: <input type="datetime-local" id="cardTime"></label>
+    <label> 類別: 
+      <select id="cardCategory">
+        <option value="冷氣">冷氣</option>
+        <option value="天車">天車</option>
+        <option value="消防系統">消防系統</option>
+        <option value="空壓機">空壓機</option>
+        <option value="水系統">水系統</option>
+        <option value="一般鉗工">一般鉗工</option>
+      </select>
+    </label>
+    <label> 內容: <input type="text" id="cardTitle"></label>
+    <label> 人物: <input type="text" id="cardPerson"></label>
+
+    <div class="formButtons">
+      <button id="saveCardBtn">✅ 儲存</button>
+      <button id="cancelCardBtn">❌ 取消</button>
     </div>
   </div>
+</div>
 
-  <script src="script.js"></script>
-</body>
-</html>
+<script src="script.js"></script>
