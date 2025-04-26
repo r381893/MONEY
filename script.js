@@ -1,71 +1,101 @@
-const categories = [
-  "冷氣",
-  "天車",
-  "空壓機",
-  "消防系統",
-  "水系統",
-  "工作母機",
-  "堆高機與升空車",
-  "一般鉗工",
-  "電銲"
-];
+// script.js
 
-// 建立分類欄位
-const board = document.getElementById('board');
-categories.forEach(cat => {
-  const column = document.createElement('div');
-  column.className = 'column';
-  column.id = cat;
-  column.innerHTML = `
-    <h2>${cat}</h2>
-    <button class="add-btn" onclick="openModal('${cat}')">➕ 新增紀錄</button>
-    <div class="card-container"></div>
-  `;
-  board.appendChild(column);
+const addCardBtn = document.getElementById('addCardBtn');
+const cardFormContainer = document.getElementById('cardFormContainer');
+const saveCardBtn = document.getElementById('saveCardBtn');
+const cancelCardBtn = document.getElementById('cancelCardBtn');
+const cardContainer = document.getElementById('cardContainer');
+
+const cardCategory = document.getElementById('cardCategory');
+const cardTitle = document.getElementById('cardTitle');
+const cardDetails = document.getElementById('cardDetails');
+const formTitle = document.getElementById('formTitle');
+
+let editingCardId = null;
+
+// 讀取本地資料
+let cards = JSON.parse(localStorage.getItem('cards')) || [];
+
+function renderCards() {
+  cardContainer.innerHTML = '';
+  cards.forEach((card, index) => {
+    const cardEl = document.createElement('div');
+    cardEl.className = 'card';
+    cardEl.innerHTML = `
+      <div class="category">分類：${card.category}</div>
+      <h3>${card.title}</h3>
+      <div class="details">${card.details}</div>
+      <div class="cardButtons">
+        <button onclick="editCard(${index})">✏️ 編輯</button>
+        <button onclick="deleteCard(${index})">🗑️ 刪除</button>
+      </div>
+    `;
+    cardContainer.appendChild(cardEl);
+  });
+}
+
+function openForm(isEdit = false) {
+  cardFormContainer.classList.remove('hidden');
+  formTitle.textContent = isEdit ? '編輯工作' : '新增工作';
+}
+
+function closeForm() {
+  cardFormContainer.classList.add('hidden');
+  cardCategory.value = '';
+  cardTitle.value = '';
+  cardDetails.value = '';
+  editingCardId = null;
+}
+
+addCardBtn.addEventListener('click', () => {
+  openForm(false);
 });
 
-function openModal(category) {
-  document.getElementById('targetCategory').value = category;
-  document.getElementById('modal').style.display = 'block';
-  document.getElementById('date').valueAsDate = new Date();
-}
+cancelCardBtn.addEventListener('click', () => {
+  closeForm();
+});
 
-function closeModal() {
-  document.getElementById('modal').style.display = 'none';
-  document.getElementById('recordForm').reset();
-}
+saveCardBtn.addEventListener('click', () => {
+  const category = cardCategory.value.trim();
+  const title = cardTitle.value.trim();
+  const details = cardDetails.value.trim();
 
-document.getElementById('recordForm').addEventListener('submit', function(e) {
-  e.preventDefault();
-
-  const category = document.getElementById('targetCategory').value;
-  const item = document.getElementById('item').value;
-  const date = document.getElementById('date').value;
-  const location = document.getElementById('location').value;
-  const person = document.getElementById('person').value;
-  const status = document.getElementById('status').value;
-  const description = document.getElementById('description').value;
-  let image = document.getElementById('image').value;
-
-  // ⛏️ 自動轉換 Google Drive 分享網址
-  const match = image.match(/\/d\/(.*?)\//);
-  if (match) {
-    image = `https://drive.google.com/uc?id=${match[1]}`;
+  if (!category || !title) {
+    alert('請填寫分類和標題！');
+    return;
   }
 
-  const card = document.createElement('div');
-  card.className = 'card';
-  card.innerHTML = `
-    <p><strong>項目：</strong><span contenteditable="true">${item}</span></p>
-    <p><strong>日期：</strong><span contenteditable="true">${date}</span></p>
-    <p><strong>地點：</strong><span contenteditable="true">${location}</span></p>
-    <p><strong>人員：</strong><span contenteditable="true">${person}</span></p>
-    <p><strong>狀態：</strong><span contenteditable="true">${status}</span></p>
-    <p><strong>說明：</strong><span contenteditable="true">${description}</span></p>
-    ${image ? `<img src="${image}" alt="圖片">` : ''}
-  `;
+  if (editingCardId !== null) {
+    cards[editingCardId] = { category, title, details };
+  } else {
+    cards.push({ category, title, details });
+  }
 
-  const container = document.querySelector(`#${category} .card-container`);
-  container.prepend(card);
-  closeModal();
+  localStorage.setItem('cards', JSON.stringify(cards));
+  renderCards();
+  closeForm();
 });
+
+function editCard(index) {
+  const card = cards[index];
+  cardCategory.value = card.category;
+  cardTitle.value = card.title;
+  cardDetails.value = card.details;
+  editingCardId = index;
+  openForm(true);
+}
+
+function deleteCard(index) {
+  if (confirm('確定要刪除這張卡片嗎？')) {
+    cards.splice(index, 1);
+    localStorage.setItem('cards', JSON.stringify(cards));
+    renderCards();
+  }
+}
+
+// 初始化
+renderCards();
+
+// 把全域函數掛到 window，讓 HTML 裡 onclick 可以呼叫
+window.editCard = editCard;
+window.deleteCard = deleteCard;
