@@ -1,36 +1,31 @@
-<!DOCTYPE html>
-<html lang="zh-TW">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>維修記錄牆（完整修正版）</title>
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-  <header>
-    <h1>🛠️ 維修記錄牆V1</h1>
-    <button id="addCategoryBtn">➕ 新增分類</button>
-    <button id="addCardBtn">➕ 新增細項</button>
-  </header>
+<div class="form-container v2">
+  <h2>新增細項 V2</h2>
+  <form>
+    <label for="time">時間：</label>
+    <input type="datetime-local" id="time" name="time">
 
-  <main id="board"></main>
+    <label for="content">內容：</label>
+    <textarea id="content" name="content" placeholder="填寫內容" rows="5"></textarea>
 
-  <div id="cardFormContainer" class="hidden">
-    <div class="cardForm">
-      <h2 id="formTitle">新增細項</h2>
-      <label>時間：<input type="datetime-local" id="cardTime"></label>
-      <label>內容：<input type="text" id="cardContent" placeholder="填寫內容"></label>
-      <label>類別：
-        <select id="cardCategory"></select>
-      </label>
-      <label>人物：<input type="text" id="cardPerson" placeholder="填寫人物"></label>
-      <div class="formButtons">
-        <button id="saveCardBtn">✅ 儲存</button>
-        <button id="cancelCardBtn">❌ 取消</button>
-      </div>
+    <label for="category">類別：</label>
+    <select id="category" name="category">
+      <option value="冷氣">冷氣</option>
+      <option value="天車">天車</option>
+      <option value="空壓機">空壓機</option>
+      <option value="消防系統">消防系統</option>
+      <option value="水系統">水系統</option>
+      <option value="工作母機">工作母機</option>
+      <option value="堆高機與升空車">堆高機與升空車</option>
+      <option value="一般鉗工">一般鉗工</option>
+      <option value="電銲">電銲</option>
+    </select>
+
+    <label for="person">人物：</label>
+    <input type="text" id="person" name="person" placeholder="填寫人物">
+
+    <div class="button-group">
+      <button type="submit" class="save-btn">✅ 儲存</button>
+      <button type="button" class="cancel-btn">❌ 取消</button>
     </div>
-  </div>
-
-  <script src="script.js"></script>
-</body>
-</html>
+  </form>
+</div>
