@@ -121,15 +121,29 @@ function renderCards() {
 
     column.innerHTML = `
       <div class="columnHeader">
-        <h2>${category}</h2>
+        <h2 class="categoryTitle">${category}</h2>
         <div class="columnButtons">
-          <button onclick="editCategory('${category}')">✏️</button>
-          <button onclick="deleteCategory('${category}')">🗑️</button>
+          <button class="editCategoryBtn" data-category="${category}">✏️</button>
+          <button class="deleteCategoryBtn" data-category="${category}">🗑️</button>
         </div>
       </div>
       <div class="cardList"></div>
     `;
     board.appendChild(column);
+  });
+
+  document.querySelectorAll('.editCategoryBtn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const oldCategory = btn.getAttribute('data-category');
+      editCategory(oldCategory);
+    });
+  });
+
+  document.querySelectorAll('.deleteCategoryBtn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const category = btn.getAttribute('data-category');
+      deleteCategory(category);
+    });
   });
 
   cards.forEach(card => {
