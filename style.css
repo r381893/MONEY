@@ -64,22 +64,23 @@ header {
 .card button {
   position: absolute;
   top: 5px;
-  right: 5px;
   background: none;
   border: none;
   cursor: pointer;
 }
 
 #cardFormContainer {
+  display: none;
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  top: 0; left: 0; right: 0; bottom: 0;
   background: rgba(0,0,0,0.5);
-  display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+#cardFormContainer.show {
+  display: flex;
 }
 
 .cardForm {
@@ -97,7 +98,6 @@ header {
 .cardForm input, .cardForm select {
   width: 100%;
   padding: 5px;
-  margin-top: 5px;
 }
 
 .formButtons {
