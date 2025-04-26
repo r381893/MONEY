@@ -17,7 +17,7 @@
   <button onclick="showForm()">➕ 新增工作記錄</button>
 </div>
 
-<!-- 新增卡片表單（隱藏中） -->
+<!-- 新增卡片表單 -->
 <div id="formContainer" style="display:none;">
   <h2>新增工作記錄</h2>
   <form id="recordForm">
@@ -53,18 +53,9 @@
   </form>
 </div>
 
-<!-- 主看板 -->
-<div class="board" id="board">
-  <!-- 各分類欄位 -->
-  <div class="column" id="冷氣"><h2>冷氣</h2></div>
-  <div class="column" id="天車"><h2>天車</h2></div>
-  <div class="column" id="空壓機"><h2>空壓機</h2></div>
-  <div class="column" id="消防系統"><h2>消防系統</h2></div>
-  <div class="column" id="水系統"><h2>水系統</h2></div>
-  <div class="column" id="工作母機"><h2>工作母機</h2></div>
-  <div class="column" id="堆高機與升空車"><h2>堆高機與升空車</h2></div>
-  <div class="column" id="一般鉗工"><h2>一般鉗工</h2></div>
-  <div class="column" id="電銲"><h2>電銲</h2></div>
+<!-- 瀑布流排版區 -->
+<div class="masonry" id="board">
+  <!-- 卡片會自動加進來 -->
 </div>
 
 <script src="script.js"></script>
