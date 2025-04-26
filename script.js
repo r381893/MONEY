@@ -10,6 +10,7 @@ document.getElementById('addCardBtn').addEventListener('click', () => {
 
 // 點擊 "取消" 按鈕
 document.getElementById('cancelCardBtn').addEventListener('click', () => {
+  clearForm();
   document.getElementById('cardFormContainer').classList.add('hidden');
 });
 
@@ -17,10 +18,10 @@ document.getElementById('cancelCardBtn').addEventListener('click', () => {
 document.getElementById('saveCardBtn').addEventListener('click', () => {
   const time = document.getElementById('cardTime').value;
   const content = document.getElementById('cardContent').value.trim();
-  const category = document.getElementById('cardCategory').value;
+  const category = document.getElementById('cardCategory').value.trim();
   const person = document.getElementById('cardPerson').value.trim();
 
-  if (!time || !content || !person) {
+  if (!time || !content || !category || !person) {
     alert('請填寫完整資訊');
     return;
   }
@@ -28,13 +29,11 @@ document.getElementById('saveCardBtn').addEventListener('click', () => {
   let cards = getCards();
 
   if (editingId) {
-    // 編輯模式
     const cardIndex = cards.findIndex(c => c.id === editingId);
     if (cardIndex !== -1) {
       cards[cardIndex] = { id: editingId, time, content, category, person };
     }
   } else {
-    // 新增模式
     const newCard = {
       id: Date.now(),
       time,
@@ -48,7 +47,7 @@ document.getElementById('saveCardBtn').addEventListener('click', () => {
   saveCards(cards);
   renderCards();
 
-  // ✅ 儲存後自動關閉表單
+  clearForm();
   document.getElementById('cardFormContainer').classList.add('hidden');
 });
 
@@ -56,7 +55,7 @@ document.getElementById('saveCardBtn').addEventListener('click', () => {
 function clearForm() {
   document.getElementById('cardTime').value = '';
   document.getElementById('cardContent').value = '';
-  document.getElementById('cardCategory').value = '冷氣';
+  document.getElementById('cardCategory').value = '';
   document.getElementById('cardPerson').value = '';
 }
 
@@ -83,7 +82,20 @@ function saveCards(cards) {
 // 渲染卡片到畫面上
 function renderCards() {
   const cards = getCards();
-  document.querySelectorAll('.cardList').forEach(list => list.innerHTML = '');
+  document.getElementById('board').querySelectorAll('.column').forEach(col => col.querySelector('.cardList').innerHTML = '');
+
+  // 找出所有不同分類
+  const categories = Array.from(new Set(cards.map(c => c.category)));
+
+  // 先清空 board，再依分類重新畫
+  document.getElementById('board').innerHTML = '';
+  categories.forEach(category => {
+    const column = document.createElement('div');
+    column.className = 'column';
+    column.dataset.category = category;
+    column.innerHTML = `<h2>${category}</h2><div class="cardList"></div>`;
+    document.getElementById('board').appendChild(column);
+  });
 
   cards.forEach(card => {
     const cardEl = document.createElement('div');
