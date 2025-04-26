@@ -1,39 +1,82 @@
-<div class="form-container v2">
-  <h2>新增細項 V2</h2>
-  <form>
-    <div class="form-group">
-      <label for="time">時間：</label>
-      <input type="datetime-local" id="time" name="time">
-    </div>
+/* === V2 樣式開始 === */
+.form-container.v2 {
+  max-width: 400px;
+  margin: 20px auto;
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
 
-    <div class="form-group">
-      <label for="content">內容：</label>
-      <textarea id="content" name="content" placeholder="填寫內容" rows="5"></textarea>
-    </div>
+.form-container.v2 h2 {
+  font-size: 22px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
 
-    <div class="form-group">
-      <label for="category">類別：</label>
-      <select id="category" name="category">
-        <option value="冷氣">冷氣</option>
-        <option value="天車">天車</option>
-        <option value="空壓機">空壓機</option>
-        <option value="消防系統">消防系統</option>
-        <option value="水系統">水系統</option>
-        <option value="工作母機">工作母機</option>
-        <option value="堆高機與升空車">堆高機與升空車</option>
-        <option value="一般鉗工">一般鉗工</option>
-        <option value="電銲">電銲</option>
-      </select>
-    </div>
+.form-group {
+  margin-bottom: 15px;
+}
 
-    <div class="form-group">
-      <label for="person">人物：</label>
-      <input type="text" id="person" name="person" placeholder="填寫人物">
-    </div>
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: 600;
+}
 
-    <div class="button-group">
-      <button type="submit" class="save-btn">✅ 儲存</button>
-      <button type="button" class="cancel-btn">❌ 取消</button>
-    </div>
-  </form>
-</div>
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+
+textarea {
+  resize: vertical;
+}
+
+.button-group {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.save-btn, .cancel-btn {
+  width: 48%;
+  padding: 10px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.save-btn {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.cancel-btn {
+  background-color: #f44336;
+  color: white;
+}
+
+/* 手機版 RWD */
+@media (max-width: 480px) {
+  .form-container.v2 {
+    width: 90%;
+  }
+
+  .button-group {
+    flex-direction: column;
+  }
+
+  .save-btn, .cancel-btn {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+}
+/* === V2 樣式結束 === */
