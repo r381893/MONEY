@@ -13,21 +13,21 @@ document.getElementById('cancelCardBtn').addEventListener('click', () => {
 
 document.getElementById('saveCardBtn').addEventListener('click', () => {
   const time = document.getElementById('cardTime').value;
-  const content = document.getElementById('cardContent').value;
+  const content = document.getElementById('cardContent').value.trim();
   const category = document.getElementById('cardCategory').value;
-  const person = document.getElementById('cardPerson').value;
+  const person = document.getElementById('cardPerson').value.trim();
 
   if (!time || !content || !person) {
     alert('請填寫完整資訊');
     return;
   }
 
+  let cards = getCards();
+
   if (editingId) {
-    const cards = getCards();
-    const index = cards.findIndex(c => c.id === editingId);
-    if (index !== -1) {
-      cards[index] = { id: editingId, time, content, category, person };
-      saveCards(cards);
+    const cardIndex = cards.findIndex(c => c.id === editingId);
+    if (cardIndex !== -1) {
+      cards[cardIndex] = { id: editingId, time, content, category, person };
     }
   } else {
     const newCard = {
@@ -37,11 +37,10 @@ document.getElementById('saveCardBtn').addEventListener('click', () => {
       category,
       person
     };
-    const cards = getCards();
     cards.push(newCard);
-    saveCards(cards);
   }
 
+  saveCards(cards);
   document.getElementById('cardFormContainer').classList.add('hidden');
   renderCards();
 });
@@ -54,7 +53,17 @@ function clearForm() {
 }
 
 function getCards() {
-  return JSON.parse(localStorage.getItem('cards') || '[]');
+  const data = localStorage.getItem('cards');
+  if (data) {
+    try {
+      return JSON.parse(data);
+    } catch (e) {
+      console.error('解析 LocalStorage 錯誤，清空資料', e);
+      localStorage.removeItem('cards');
+      return [];
+    }
+  }
+  return [];
 }
 
 function saveCards(cards) {
@@ -71,7 +80,7 @@ function renderCards() {
     cardEl.innerHTML = `
       <div class="cardContent"><strong>內容：</strong>${card.content}</div>
       <div class="cardFooter">
-        <div><strong>時間：</strong>${card.time}</div>
+        <div><strong>時間：</strong>${formatTime(card.time)}</div>
         <div><strong>人物：</strong>${card.person}</div>
       </div>
       <button onclick="editCard(${card.id})">✏️</button>
@@ -103,6 +112,14 @@ function deleteCard(id) {
     saveCards(cards);
     renderCards();
   }
+}
+
+function formatTime(timeString) {
+  const d = new Date(timeString);
+  if (!isNaN(d)) {
+    return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0') + ' ' + String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0');
+  }
+  return timeString;
 }
 
 renderCards();
