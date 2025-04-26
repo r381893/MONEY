@@ -1,43 +1,11 @@
-<!DOCTYPE html>
-<html lang="zh-TW">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>維修記錄牆</title>
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-  <header>
-    <h1>🛠️ 維修記錄牆</h1>
-    <button id="addCardBtn">➕ 新增細項</button>
-  </header>
-
-  <main id="board">
-    <!-- 六大類別 -->
-    <div class="column" data-category="冷氣"><h2>冷氣</h2><div class="cardList"></div></div>
-    <div class="column" data-category="天車"><h2>天車</h2><div class="cardList"></div></div>
-    <div class="column" data-category="消防系統"><h2>消防系統</h2><div class="cardList"></div></div>
-    <div class="column" data-category="水系統"><h2>水系統</h2><div class="cardList"></div></div>
-    <div class="column" data-category="空壓機"><h2>空壓機</h2><div class="cardList"></div></div>
-    <div class="column" data-category="一般鉗工"><h2>一般鉗工</h2><div class="cardList"></div></div>
-  </main>
-
-  <!-- 新增/編輯卡片表單 -->
-  <div id="cardFormContainer" class="hidden">
+<!-- 新增/編輯卡片的表單 -->
+<div id="cardFormContainer" class="hidden">
+  <div class="cardFormWrapper">
     <div class="cardForm">
       <h2 id="formTitle">新增細項</h2>
       <label>時間：<input type="datetime-local" id="cardTime"></label>
       <label>內容：<input type="text" id="cardContent" placeholder="填寫內容"></label>
-      <label>類別：
-        <select id="cardCategory">
-          <option value="冷氣">冷氣</option>
-          <option value="天車">天車</option>
-          <option value="消防系統">消防系統</option>
-          <option value="水系統">水系統</option>
-          <option value="空壓機">空壓機</option>
-          <option value="一般鉗工">一般鉗工</option>
-        </select>
-      </label>
+      <label>類別：<input type="text" id="cardCategory" placeholder="填寫分類（例如冷氣、天車）"></label>
       <label>人物：<input type="text" id="cardPerson" placeholder="填寫人物"></label>
       <div class="formButtons">
         <button id="saveCardBtn">✅ 儲存</button>
@@ -45,7 +13,4 @@
       </div>
     </div>
   </div>
-
-  <script src="script.js"></script>
-</body>
-</html>
+</div>
