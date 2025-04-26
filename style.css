@@ -2,6 +2,9 @@ body {
   margin: 0;
   font-family: Arial, sans-serif;
   background: linear-gradient(#d4f1f9, #a2d9f5);
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 header {
@@ -19,18 +22,21 @@ header {
 }
 
 #board {
+  flex: 1;
   display: flex;
   padding: 10px;
   overflow-x: auto;
+  background: #e0f7ff;
 }
 
 .column {
   background: #ffffffcc;
   border-radius: 10px;
   padding: 10px;
-  margin: 10px;
+  margin: 0 10px;
   min-width: 250px;
-  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
 }
 
 .columnHeader {
@@ -47,6 +53,8 @@ header {
 
 .cardList {
   margin-top: 10px;
+  flex: 1;
+  overflow-y: auto;
 }
 
 .card {
@@ -80,11 +88,11 @@ header {
 }
 
 .card button:first-of-type {
-  right: 35px; /* 編輯按鈕稍微靠左一點 */
+  right: 35px;
 }
 
 .card button:last-of-type {
-  right: 5px; /* 刪除按鈕靠最右 */
+  right: 5px;
 }
 
 #cardFormContainer {
