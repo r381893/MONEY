@@ -1,112 +1,39 @@
 <!DOCTYPE html>
-<html lang="zh-Hant">
+<html lang="zh-TW">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>維修紀錄牆 v9 (Padlet風格)</title>
-  <style>
-    body { margin: 0; font-family: 'Noto Sans TC', sans-serif; background: #f1f1f1; }
-    header { text-align: center; background: #ffffff; padding: 1em; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
-    .container { display: flex; flex-wrap: wrap; gap: 1em; justify-content: center; padding: 1em; }
-    .card { background: #ffffff; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); padding: 1em; width: 280px; display: flex; flex-direction: column; word-break: break-word; }
-    .card img { width: 100%; height: auto; margin-top: 0.5em; border-radius: 6px; }
-    .card p, .card h3 { margin: 0.5em 0; }
-    .card [contenteditable] { outline: 1px dashed transparent; }
-    .card [contenteditable]:focus { outline-color: #4caf50; background: #e8f5e9; }
-    .add-btn { margin: 1em auto; padding: 0.8em 1.5em; background-color: #4caf50; color: white; font-weight: bold; border: none; border-radius: 6px; cursor: pointer; }
-    .modal { display: none; position: fixed; z-index: 10; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); }
-    .modal-content { background: #fff; padding: 1.5em; max-width: 400px; margin: 10vh auto; border-radius: 10px; }
-    .modal-content label { display: block; margin: 0.6em 0; }
-    .modal-content input, textarea { width: 100%; padding: 0.4em; margin-top: 0.2em; border-radius: 5px; border: 1px solid #ccc; }
-    .btn-group { text-align: right; margin-top: 1em; }
-    .btn-group button { margin-left: 0.5em; padding: 0.5em 1em; border: none; border-radius: 5px; background-color: #4caf50; color: white; cursor: pointer; }
-  </style>
+  <title>工作記錄牆</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <header>
-    <h1>維修紀錄牆 v9</h1>
-    <p>仿Padlet風格．支援圖片/儲存/編輯</p>
+    <h1>🛠️ 工作記錄牆</h1>
+    <button id="addCardBtn">➕ 新增工作</button>
   </header>
 
-  <button class="add-btn" onclick="openModal()">➕ 新增紀錄</button>
-  <div class="container" id="container"></div>
+  <section id="cardContainer"></section>
 
-  <div class="modal" id="modal">
-    <div class="modal-content">
-      <h2>新增紀錄</h2>
-      <form id="recordForm">
-        <label>項目名稱：<input type="text" id="title" required></label>
-        <label>日期：<input type="date" id="date"></label>
-        <label>說明：<textarea id="description" rows="3"></textarea></label>
-        <label>圖片網址：<input type="text" id="image"></label>
-        <div class="btn-group">
-          <button type="submit">新增</button>
-          <button type="button" onclick="closeModal()">取消</button>
-        </div>
-      </form>
+  <!-- 新增/編輯卡片的表單 -->
+  <div id="cardFormContainer" class="hidden">
+    <div class="cardForm">
+      <h2 id="formTitle">新增工作</h2>
+      <label>
+        分類：<input type="text" id="cardCategory" placeholder="例如：冷氣維修">
+      </label>
+      <label>
+        標題：<input type="text" id="cardTitle" placeholder="例如：冷氣漏水處理">
+      </label>
+      <label>
+        細項內容：<textarea id="cardDetails" placeholder="詳細工作內容..."></textarea>
+      </label>
+      <div class="formButtons">
+        <button id="saveCardBtn">✅ 儲存</button>
+        <button id="cancelCardBtn">❌ 取消</button>
+      </div>
     </div>
   </div>
 
-  <script>
-    const container = document.getElementById('container');
-    const localKey = 'padletStyleCards';
-
-    function transformDriveURL(url) {
-      const match = url.match(/\/d\/(.*?)\//);
-      return match ? `https://drive.google.com/uc?id=${match[1]}` : url;
-    }
-
-    function openModal() {
-      document.getElementById('modal').style.display = 'block';
-      document.getElementById('recordForm').reset();
-      document.getElementById('date').valueAsDate = new Date();
-    }
-
-    function closeModal() {
-      document.getElementById('modal').style.display = 'none';
-    }
-
-    function saveCards() {
-      const cards = Array.from(document.querySelectorAll('.container .card')).map(card => ({
-        html: card.innerHTML
-      }));
-      localStorage.setItem(localKey, JSON.stringify(cards));
-    }
-
-    function loadCards() {
-      const saved = JSON.parse(localStorage.getItem(localKey) || '[]');
-      saved.forEach(c => {
-        const temp = document.createElement('div');
-        temp.className = 'card';
-        temp.innerHTML = c.html;
-        container.appendChild(temp);
-      });
-    }
-
-    document.getElementById('recordForm').addEventListener('submit', function(e) {
-      e.preventDefault();
-      const title = document.getElementById('title').value;
-      const date = document.getElementById('date').value;
-      const description = document.getElementById('description').value;
-      let image = transformDriveURL(document.getElementById('image').value);
-
-      const card = document.createElement('div');
-      card.className = 'card';
-      card.innerHTML = `
-        <h3 contenteditable="true">${title}</h3>
-        ${date ? `<p contenteditable="true">🗓️ ${date}</p>` : ''}
-        ${description ? `<p contenteditable="true">${description}</p>` : ''}
-        ${image ? `<img src="${image}" alt="圖片">` : ''}
-      `;
-
-      container.prepend(card);
-      saveCards();
-      closeModal();
-    });
-
-    document.addEventListener('input', () => saveCards());
-
-    loadCards();
-  </script>
+  <script src="script.js"></script>
 </body>
 </html>
