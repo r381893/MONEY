@@ -1,16 +1,212 @@
-<!-- 新增/編輯卡片的表單 -->
-<div id="cardFormContainer" class="hidden">
-  <div class="cardFormWrapper">
-    <div class="cardForm">
-      <h2 id="formTitle">新增細項</h2>
-      <label>時間：<input type="datetime-local" id="cardTime"></label>
-      <label>內容：<input type="text" id="cardContent" placeholder="填寫內容"></label>
-      <label>類別：<input type="text" id="cardCategory" placeholder="填寫分類（例如冷氣、天車）"></label>
-      <label>人物：<input type="text" id="cardPerson" placeholder="填寫人物"></label>
-      <div class="formButtons">
-        <button id="saveCardBtn">✅ 儲存</button>
-        <button id="cancelCardBtn">❌ 取消</button>
-      </div>
-    </div>
+
+<!DOCTYPE html>
+<!-- BE GOOD -->
+<html
+  class="show interactive" lang="zh-TW" data-dir="ltr" data-environment="production" data-version="v-2504260130-c28a2-production" data-layout="grid" data-country="TW"
+>
+  <head>
+    <meta name="realtime-uri" content="wss://padlet.com/_/realtime">
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    
+
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+      <link rel="manifest" href="/manifest.json?start_url=https%3A%2F%2Fpadlet.com%2Fstar86%2F113-pksz9fsqftb3f357">
+
+    <meta name="csrf-param" content="authenticity_token" />
+<meta name="csrf-token" content="5M7qzwtIYhR1j7nK9PCzk7tKNGxGf7Y3LK7mbiOWo5L7bZYmEawqNq25VNwDOf6XVY3XXfyWd_4yrU281W5xew" />
+    
+
+
+        <link rel="icon" href="https://padlet.net/favicon.ico" sizes="32x32" />
+<link rel="icon" type="image/svg+xml" href="https://padlet.net/favicon.svg" />
+<link rel="apple-touch-icon" sizes="180x180" href="https://padlet.net/apple-touch-icon.png" />
+
+
+
+      <meta name="description" content="創作元素為 Padlet">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://padlet.com/star86/113-pksz9fsqftb3f357">
+  <meta property="og:title" content="113藝術季-美好時光">
+  <meta property="og:description" content="創作元素為 Padlet">
+  <meta property="og:image" content="https://padlet.net/social-previews/board/pksz9fsqftb3f357/opengraph.jpg?ts=1745472568">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:updated_time" content="2025-04-24 05:29:28 UTC">
+  <meta property="og:site_name" content="Padlet" />
+  <meta property="fb:app_id" content="166448900169195" />
+  <meta name="twitter:site" content="@padlet">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="113藝術季-美好時光">
+  <meta name="twitter:description" content="創作元素為 Padlet">
+  <meta name="twitter:image" content="https://padlet.net/social-previews/board/pksz9fsqftb3f357/twitter.jpg?ts=1745472568">
+
+      <script type="application/ld+json">
+{"@context":"https://schema.org","@type":"Article","url":"https://padlet.com/star86/113-pksz9fsqftb3f357","name":"113藝術季-美好時光","description":"Made with Padlet","keywords":"","dateModified":"2025-04-24T05:29:28.597Z","dateCreated":"2024-12-27T00:01:03.735Z","author":{"@type":"Person","name":"黃玉如","url":"https://padlet.com/star86"},"creator":"黃玉如","image":"https://padlet.net/social-previews/board/pksz9fsqftb3f357/opengraph.jpg?ts=1745472568"}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"item":{"@id":"https://padlet.com/star86","name":"黃玉如","image":"https://lh3.googleusercontent.com/a/ACg8ocJvuJd3pQXt7f7VPII3lN8lEl_SYL6RYE-sMrVFIU2GrpxcNgY=s96-c"}},{"@type":"ListItem","position":2,"item":{"@id":"https://padlet.com/star86/113-pksz9fsqftb3f357","name":"113藝術季-美好時光","image":"https://padlet-artifacts.storage.googleapis.com/e46aa259a1da4a37c1ead89f233a339ae32aaffe/869d15a93dcba27cc727a5ef2a081156-h-697b452777ddc9cb742e7a62fcc860ba.png"}}]}
+</script>
+
+
+      <title>113藝術季-美好時光</title>
+
+    <link rel="alternate" type="application/rss+xml" title="113藝術季-美好時光" href="https://padlet.com/padlets/pksz9fsqftb3f357/exports/feed.xml?token=3df4afbc5d90e7cfd24144161c367730" />
+    <link rel="canonical" href="https://padlet.com/star86/113-pksz9fsqftb3f357" />
+    <meta name="theme-color" content="rgb(164,236,243)">
+    <meta content="Vlu6bFyu0MZRb2mOd4CKPsSpUQ3Ca/JGklE14vPPYAc=" name="verify-v1" />
+    <script>window.$pepinUser = {"userRegistration":"Anonymous","userId":"3747859153","tenantId":"1","userAge":0,"userPlanName":"vanilla","userCreatedAt":"2025-04-26T14:08:00.484Z"}</script>
+<script>window.$pepinTraits = {"userRegistration":"Anonymous","userId":"3747859153","tenantId":"1","userAge":0,"userPlanName":"vanilla","userCreatedAt":"2025-04-26T14:08:00.484Z","wallId":"222872753","wallBuilderId":"2434407035","wallTenantId":"1","wallLibraryId":null,"wallCreatedAt":"2024-12-27T00:01:03.735Z","wallFormat":"grid"}</script>
+<link rel="preconnect" href="https://pepin.padlet.com/" crossorigin >
+<script type="text/javascript">
+window.addEventListener('load', function() {
+  (function(){"use strict";window.RudderSnippetVersion="3.0.60";var e="rudderanalytics";window[e]||(window[e]=[]);var t=window[e];if(Array.isArray(t)){if(!0===t.snippetExecuted&&window.console&&console.error)console.error("RudderStack JavaScript SDK snippet included more than once.");else{t.snippetExecuted=!0,window.rudderAnalyticsBuildType="modern";var n="async",i=["setDefaultInstanceKey","load","ready","page","track","identify","alias","group","reset","setAnonymousId","startSession","endSession","consent"];for(var o in i){var r=i[o];t[r]=function(t){return function(){if(Array.isArray(window[e]))window[e].push([t].concat(Array.prototype.slice.call(arguments)));else{var n;(n=window[e][t])&&n.apply(window[e],arguments)}}}(r)}var a=document.head||document.getElementsByTagName("head")[0],d=document.body||document.getElementsByTagName("body")[0];window.rudderAnalyticsAddScript=function(e,t,i){var o=document.createElement("script");o.src=e,o.setAttribute("data-loader","RS_JS_SDK"),t&&i&&o.setAttribute(t,i),"async"===n?o.async=!0:"defer"===n&&(o.defer=!0),a?a.insertBefore(o,a.firstChild):d.insertBefore(o,d.firstChild)},window.rudderAnalyticsMount=function(){!function(){"undefined"==typeof globalThis&&function(){var e="undefined"!=typeof self?self:"undefined"!=typeof window?window:null;e&&Object.defineProperty(e,"globalThis",{value:e,configurable:!0})}()}(),window.rudderAnalyticsAddScript("https://padlet.net/v3/modern/rdd-v3.min.js","data-rsa-write-key","22crxVC2QvBTRHCDzJOaFA68siE")},window.rudderAnalyticsMount()}}})();
+
+  const sourceConfig = {
+    polyfillIfRequired: false,
+    storage: {
+      encryption: {
+        version: "legacy"
+      },
+      type: "none",
+      // @see https://www.rudderstack.com/docs/sources/event-streams/sdks/rudderstack-javascript-sdk/data-storage-cookies/#cookies
+      entries: {
+        anonymousId: {
+          type: "localStorage"
+        },
+        initialReferrer: {
+          type: "localStorage"
+        }
+      }
+    },
+    getSourceConfig: () => ({
+      updatedAt: new Date().toISOString(),
+      source: {
+        name: "Webapp Prod",
+        id: "22crxRwu6nFSukFa0fVbUzedrLD",
+        workspaceId: "20j5he3cdMxos8Iw9YC1rXtCyXc",
+        writeKey: "22crxVC2QvBTRHCDzJOaFA68siE",
+        updatedAt: new Date().toISOString(),
+        config: {
+          statsCollection: {
+            errors: { enabled: false },
+            metrics: { enabled: false }
+          }
+        },
+        enabled: true,
+        destinations: []
+      }
+    })
+  };
+  rudderanalytics.load("22crxVC2QvBTRHCDzJOaFA68siE", "https://pepin.padlet.com/", sourceConfig);
+
+  rudderanalytics.page('Surface', 'Surface Show', undefined, { traits: $pepinTraits })
+});
+</script>
+<script>var oldTimeSincePageLoad;window.ww||(window.ww={}),ww.analytics={},oldTimeSincePageLoad=null,ww.analytics.trackTiming=function(e,n){var a,t;if(window.performance)return a=(t=performance.now())-(oldTimeSincePageLoad||0),oldTimeSincePageLoad=t,a},ww.analytics.trackEventTiming=function(e,n,a,t){return null},ww.analytics.trackEvent=function(e,n,a,t){if(null!=n)return null};</script>
+
+
+      <link rel="preload" href="https://padlet.net/ui/assets/inter_subset-BU7cc_bp.css" as="style" type="text/css"><link rel="stylesheet" href="https://padlet.net/ui/assets/inter_subset-BU7cc_bp.css" />
+      <link rel="preload" href="https://padlet.net/ui/assets/kit-OFePamIx.css" as="style" type="text/css"><link rel="stylesheet" href="https://padlet.net/ui/assets/kit-OFePamIx.css" media="screen" />
+    <link rel="preload" href="https://padlet.net/ui/assets/show-r9OclNqq.css" as="style" type="text/css"><link rel="stylesheet" href="https://padlet.net/ui/assets/show-r9OclNqq.css" media="screen" />
+    <link rel="preload" href="https://padlet.net/ui/assets/print-DO0QbQ8o.css" as="style" type="text/css"><link rel="stylesheet" href="https://padlet.net/ui/assets/print-DO0QbQ8o.css" media="print" />
+
+
+      <link rel="preload" href="https://padlet.net/ui/assets/grid-Co1ahvov.css" as="style" type="text/css"><link rel="stylesheet" href="https://padlet.net/ui/assets/grid-Co1ahvov.css" />
+      <link rel="preload" href="https://padlet.net/ui/assets/stream-D2MgrXcN.css" as="style" type="text/css"><link rel="stylesheet" href="https://padlet.net/ui/assets/stream-D2MgrXcN.css" />
+      <link rel="preload" href="https://padlet.net/ui/assets/matrix-DtD806Zp.css" as="style" type="text/css"><link rel="stylesheet" href="https://padlet.net/ui/assets/matrix-DtD806Zp.css" />
+      <link rel="preload" href="https://padlet.net/ui/assets/shelf-ChX02O5T.css" as="style" type="text/css"><link rel="stylesheet" href="https://padlet.net/ui/assets/shelf-ChX02O5T.css" />
+      <link rel="preload" href="https://padlet.net/ui/assets/free-BbU19pSr.css" as="style" type="text/css"><link rel="stylesheet" href="https://padlet.net/ui/assets/free-BbU19pSr.css" />
+      <link rel="preload" href="https://padlet.net/ui/assets/map-DWdHUioR.css" as="style" type="text/css"><link rel="stylesheet" href="https://padlet.net/ui/assets/map-DWdHUioR.css" />
+
+    
+    
+    
+
+    
+    <link rel="preconnect" href="https://v1.padlet.pics" >
+      <img style="display: none;" src="https://v1.padlet.pics/1/image?t=c_scale,dpr_1,e_blur:1000,f_jpg,h_60,w_60&url=https%3A%2F%2Fpadlet.net%2Fwallpapers%2Fv0%2F2e60feb14376870f555f352fc613f42e%2F46982e5f%2FEligera.jpg">
+      <style>body{background-image:url("https://v1.padlet.pics/1/image?t=c_scale,dpr_1,e_blur:1000,f_jpg,h_60,w_60&url=https%3A%2F%2Fpadlet.net%2Fwallpapers%2Fv0%2F2e60feb14376870f555f352fc613f42e%2F46982e5f%2FEligera.jpg");background-size:cover;}</style>
+    <script>
+    document.cookie="ww_dpr="+Math.round(window.devicePixelRatio)+"; expires=Tue, 19 Aug 2042 21:56:52 GMT; path=/"
+    ww.uid = "" + (new Date().getTime() + "" + Math.random()).replace(".","");
+    ww.flip = {"banksy":true,"banksyDev":false,"debugFrontend":false,"joypixels8p0":true,"goldPlansVisible":true,"aiImageSearch":true,"googleDrive":true,"realtimeFetching":false,"brahmsCheck":false,"surfaceLibraryOrgVisitorPermissions":false,"surfaceRoleBadges":true,"layoutFormatSettingV3":true,"surfacePdfExportPanelV2":true,"reportButton":true,"dashMakeButton":true,"spreadsheetExportsV2":true,"remakeSettingV2":true,"showCommandPalette":false,"autoContentModeration":true,"publicApi":true,"surfaceCommentsPerPost":false,"editThumbnail":true,"arLensesPreview":false,"expandCommentImage":true,"onboardingPanel":true,"commentModeration":true,"googleAppLicensing":true,"stripeCheckout":false,"fullClientSurface":false,"personalPricingPlansExperiment":true,"personalPricingPlansExperimentV2":true,"keyboardShortcutsSetting":true,"autoDismissAppMessagesSetting":true,"remakeLink":true,"sandboxVisualFx":true,"sandboxSoundFx":true,"virtualizedPostsGrid":false,"lazyRenderPosts":true,"remakePanelV2":true,"signUpSurface":true,"playVideoInExpanded":true,"grading":true,"aiGrading":false,"tenantFreeze":false,"freezeSandbox":true,"surfaceAiChat":false,"removeArchive":true,"aiTalk":true,"locationSelectorV2":true,"openInAppBanner":true,"demoPadletPanel":false,"demoPadletSignup":false,"onboardingDemoV2":false,"onboardingDemoV2Copy":false,"upgradeModalCopyAExperiment":true,"showAnonymousUserNames":true,"mediaRecorderQuotas":true,"audioPlayerV2":false,"audioPlayerV2Sandbox":false,"padletPickerV2":true,"downloadWallAttachmentsV2":true,"libraryAttachmentSettings":null,"commentAttachmentSettings":true,"upgradeModalSingleStepExperiment":true,"locationPickerV2":true,"libraryGoogleAppLicensing":true,"linkSafetyModal":true,"unlimitedSandboxes":true,"currentSlideAsImageWithBanksy":true,"deprecateDrivePage":true,"wallContentProtection":true,"higherMonthlyPricingPlans":true,"padletAnalytics":true,"reorderCustomFieldsWithKeyboard":true,"sandboxCode":false,"fetchLinksWithWishes":true,"transferSchoolPadletPermission":true,"videoTrimming":false,"sandboxRetainActiveTool":false,"exitTicket":false,"sandboxTextSizeModifier":true,"sandboxPlayModeAutoplay":true,"sandboxResizableNotes":false,"sandboxStickers":false,"wallEngagementTime":true,"wallEngagementTimeTracking":true,"highContrastMode":true,"reducedMotionSetting":true,"sandboxPngFramePreview":true,"translatePadlet":false,"pageSpecificA11ySettings":true,"customPostEmailProperty":true,"customPostPhoneNumberProperty":true,"customPostUrlProperty":true,"customPostUserProperty":false,"sandboxCardNavigation":true,"sandboxCardTemplates":true,"captionsUploadAndDownload":false,"tableLayout":true,"screenRecorderV2":true,"columnsLayout":true,"surfaceMapsV2":false,"sandboxTextFonts":true,"commandBar":false,"sandboxSvgIcons":true,"addPostLink":false,"editThumbnailForAudioVideoFiles":false,"allSlideAsImageWithBanksy":true,"photoAlbum":false,"sandboxThemeBackgrounds":true,"defaultDashboardLibraryNavigation":true,"aiPermissionsForAiRecipes":false,"aiPermissionsForImageAndSpeechGeneration":false,"sandboxTextFormatting":false,"undoRedoDeleteActions":false,"returnOfTimeline":false};
+    </script>
+  </head>
+  <body ww-app-env="production" ww-app-version="v-2504260130-c28a2-production" ww-app-variant="desktop" ww-variant-version="" ww-capabilities="" class="variant-desktop" data-behavior="background-holder" data-color-scheme="light" data-font="1">
+    <script>
+  var img = new Image()
+  img.onload = function() {document.querySelector("body").style.backgroundSize = "cover";document.querySelector("body").style.backgroundImage = 'url('+img.src+')';}
+  img.src = "https://v1.padlet.pics/1/image?t=c_lfill,dpr_1,f_auto,g_auto,h_{height},q_auto:best,w_{width}&url=https%3A%2F%2Fpadlet.net%2Fwallpapers%2Fv0%2F2e60feb14376870f555f352fc613f42e%2F46982e5f%2FEligera.jpg".replace("{width}", screen.width).replace("{height}", screen.height)
+</script>
+
+      <div id="diagnostics">
+    無法檢視此頁面？前往我們的<a href="/diagnostics" target="_blank">診斷頁面</a>，以便查看哪邊出了問題。
   </div>
-</div>
+
+    <link rel="preload" as="fetch" id="starting-state-preload" href="/api/6/padlet_starting_state?token=eklDRHh3Y0FjR0Y1Ykc5aFpONEFHTWNIQUhWelpYSmZhV1RPMzJQSzBjY0hBSGRoYkd4ZmFXVE9EVWpFc2NjVEFHSnlaV0ZyYjNWMFgzTmxZM1JwYjI1ZmFXVEF4eHNBYzJWamRHbHZibDlpY21WaGEyOTFkRjlwWkdWdWRHbG1hV1Z5d01jVkFHbHpYM04xWW0xcGMzTnBiMjVmY21WeGRXVnpkTUxIRFFCcGMxOW1hWEp6ZEY5MmFXVjN3c2NNQUdselgzSmxZV1JmYjI1c2VjTEhFZ0JwYzE5emFXMXdiR2xtYVdWa1gzWnBaWGZDeHhJQWFYTmZjMk55WldWdWMyaHZkRjl0YjJSbHdzY2JBSGhmWVhWMGFHOXlYMmx1WDNOamNtVmxibk5vYjNSZmJXOWtaY1BISGdCNFgzSmxZV04wYVc5dWMxOXBibDl6WTNKbFpXNXphRzkwWDIxdlpHWER4eDBBZUY5amIyMXRaVzUwYzE5cGJsOXpZM0psWlc1emFHOTBYMjF2WkdYRHh4a0FlRjlzYjJkdlgybHVYM05qY21WbGJuTm9iM1JmYlc5a1pjUEhDd0JwYzE5bGJXSmxaR1JsWk1MSER3QnBjMTlzZEdsZlpXMWlaV1JrWldUQ3h4MEFhWE5mZDJocGRHVmliMkZ5WkY5bGJXSmxaRjl3YkdGNVgyMXZaR1hDeHhVQVpHVm1ZWFZzZEY5d1pHWmZjR0ZuWlY5emFYcGxvbUUweHd3QWFYTmZjMnhwWkdWemFHOTN3c2NQQUcxaFoybGpYM2RoYkd4ZmRIbHdaY0RIRGdCblpXNWxjbUYwYVc1blgzQmtac0xIQ3dCaGNuWnZYMk52Ym1acFo0TEhCd0JqWkc1SWIzTjB0R0Z6YzJWMGN5NXdZV1JzWlhSalpHNHVZMjl0eHdVQWRHOXJaVzZCeHdvQWIyRjFkR2hVYjJ0bGJ0bEFNMkZoT1RRME9XVmpNbVZrTkdFMVpqRTBNV0kzTkRVeFpEVXlPV00yTmpZNFltWTVaREJqWWpnM01qUmtaVE5qTkRGbVltWTRPVGMxWkRabE4yVXlNTWNVQUdsdWRtbDBaVjlxZFhOMFgyRmpZMlZ3ZEdWa3dNY2pBSEJoY21GdFgzQnZjM1JmYlc5a1pYSmhkR2x2Ymw5aFkzUnBiMjVmY21WemRXeDB3TWNtQUhCaGNtRnRYMk52YlcxbGJuUmZiVzlrWlhKaGRHbHZibDloWTNScGIyNWZjbVZ6ZFd4MHdNY0tBR1Y0Y0dseVpYTmZZWFRIRHdqT2FBenZ6YzRMTmp5RUFLTlZWRVBIQmdCallXeHNaWEs4YzNWeVptRmpaVjl6ZEdGeWRHbHVaMTl6ZEdGMFpTNXlZam96Tnc9PS0tYTk0NjZlMzk2NGIyODkzODUyMDk2YWIxYjgzNTliNzM3MTNkODEzYQ--" />
+  <link rel="preload" as="fetch" id="wishes-preload" href="/api/10/wishes?wall_hashid=board_q8WbyNrX70YPyPjd&amp;page_start=" />
+<link rel="preload" href="https://padlet.net/fonts/inter/subset/inter-latin.woff2" as="font" crossorigin>
+
+
+  <div id="print-notification" title="要正確列印此頁面，請前往「共用」面板，選擇「匯出」部分下的「列印」。"></div>
+<div id="app"></div>
+
+
+
+    
+      <script src="https://padlet.net/assets/translations/zh_TW-9afff67143db758663a791a5b50f841de5ad9ab5bfffade4baa1497bcb660603.js" id="translations-script"></script>
+
+        <script src="https://padlet.net/ui/assets/surface-CKWP0HuG.js" type="module"></script><link rel="stylesheet" href="https://padlet.net/ui/assets/tailwind-Ca0LAsm7.css" media="screen" />
+<link rel="stylesheet" href="https://padlet.net/ui/assets/SurfacePostBody-CiWSRymh.css" media="screen" />
+<link rel="stylesheet" href="https://padlet.net/ui/assets/Surface-D3hYBI_T.css" media="screen" />
+<link rel="stylesheet" href="https://padlet.net/ui/assets/OzIcon-DOQbA_E2.css" media="screen" />
+<link rel="stylesheet" href="https://padlet.net/ui/assets/OzInput-CyIxS3vJ.css" media="screen" />
+<link rel="stylesheet" href="https://padlet.net/ui/assets/GlobalSnackbar-B0Gqx20_.css" media="screen" />
+<link rel="stylesheet" href="https://padlet.net/ui/assets/OzOverlay-9pwQoT4y.css" media="screen" />
+<link rel="stylesheet" href="https://padlet.net/ui/assets/OzLoadingSpinner-DbxFxp22.css" media="screen" />
+
+    
+    <script>
+if (navigator.serviceWorker) {
+  const previousServiceWorkerPath = '/sw.js?version=202007311200'
+  const currentServiceWorkerPath = '/sw.js?version=202410010000'
+
+  if (
+    navigator.serviceWorker.controller != null &&
+    navigator.serviceWorker.controller.scriptURL.includes(previousServiceWorkerPath)
+  ) {
+    navigator.serviceWorker.getRegistrations().then(function (registrations) {
+      for (const i in registrations) {
+        const registration = registrations[i]
+        if (
+          registration.active != null &&
+          registration.active.scriptURL.includes(previousServiceWorkerPath)
+        ) {
+          registration.unregister()
+        }
+      }
+    })
+  }
+
+  navigator.serviceWorker
+    .register(currentServiceWorkerPath)
+    .then(function (reg) {
+      // console.log('[Companion]', 'Service worker registered!');
+    })
+    .catch(function (error) {
+      // console.warn('[Companion]', 'Service worker failed to register with the following error:', error);
+    })
+}
+</script>
+
+    <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" width="0" height="0" viewBox="0 0 1 1">
+      <clipPath id="rounded-hexagon-svg-clip-path" clipPathUnits="objectBoundingBox">
+        <path
+          d="M 0.371094 0.03125 C 0.449219 -0.0117188 0.550781 -0.0117188 0.628906 0.03125 L 0.871094 0.164062 C 0.949219 0.207031 1 0.285156 1 0.371094 L 1 0.628906 C 1 0.714844 0.949219 0.792969 0.871094 0.835938 L 0.628906 0.96875 C 0.550781 1.011719 0.449219 1.011719 0.371094 0.96875 L 0.128906 0.835938 C 0.0507812 0.792969 0 0.714844 0 0.628906 L 0 0.371094 C 0 0.285156 0.0507812 0.207031 0.128906 0.164062 Z M 0.371094 0.03125"
+        />
+      </clipPath>
+    </svg>
+  </body>
+</html>
