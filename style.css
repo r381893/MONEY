@@ -33,9 +33,16 @@ header {
   flex: 0 0 auto;
 }
 
+.columnHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
 .column h2 {
   text-align: center;
   color: #4fb0e5;
+  margin: 0;
 }
 
 .cardList {
@@ -107,4 +114,9 @@ header {
 
 .hidden {
   display: none;
+}
+
+.columnButtons {
+  display: flex;
+  gap: 5px;
 }
