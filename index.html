@@ -2,62 +2,49 @@
 <html lang="zh-Hant">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>維修工作記錄牆</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <header>
+    <h1>維修工作記錄牆</h1>
+    <p>各分類維修紀錄整理平台</p>
+  </header>
 
-<div class="header">
-  <h1>維修工作記錄牆</h1>
-  <p>記錄日常維修與工作處理</p>
-</div>
+  <div class="board-container">
+    <div class="board" id="board">
+      <!-- 每個分類欄位 -->
+      <!-- JS 會自動產生 -->
+    </div>
+  </div>
 
-<div class="controls">
-  <button onclick="showForm()">➕ 新增工作記錄</button>
-</div>
+  <!-- 新增卡片彈窗 -->
+  <div class="modal" id="modal">
+    <div class="modal-content">
+      <h2>新增維修紀錄</h2>
+      <form id="recordForm">
+        <input type="hidden" id="targetCategory">
+        <label>項目：<input type="text" id="item" required></label>
+        <label>日期：<input type="date" id="date" required></label>
+        <label>地點：<input type="text" id="location"></label>
+        <label>處理人員：<input type="text" id="person"></label>
+        <label>狀態：
+          <select id="status">
+            <option value="完成">✅ 完成</option>
+            <option value="待修">⏳ 待修</option>
+          </select>
+        </label>
+        <label>說明：<textarea id="description"></textarea></label>
+        <label>Google Drive 圖片連結（可選）：<input type="text" id="image"></label>
+        <div class="btn-group">
+          <button type="submit">新增</button>
+          <button type="button" onclick="closeModal()">取消</button>
+        </div>
+      </form>
+    </div>
+  </div>
 
-<!-- 新增卡片表單 -->
-<div id="formContainer" style="display:none;">
-  <h2>新增工作記錄</h2>
-  <form id="recordForm">
-    <label>分類：
-      <select id="category" required>
-        <option value="">請選擇</option>
-        <option value="冷氣">冷氣</option>
-        <option value="天車">天車</option>
-        <option value="空壓機">空壓機</option>
-        <option value="消防系統">消防系統</option>
-        <option value="水系統">水系統</option>
-        <option value="工作母機">工作母機</option>
-        <option value="堆高機與升空車">堆高機與升空車</option>
-        <option value="一般鉗工">一般鉗工</option>
-        <option value="電銲">電銲</option>
-      </select>
-    </label>
-    <label>項目：<input type="text" id="item" required></label>
-    <label>日期：<input type="date" id="date" required></label>
-    <label>地點：<input type="text" id="location"></label>
-    <label>處理人員：<input type="text" id="person"></label>
-    <label>狀態：
-      <select id="status">
-        <option value="完成">✅ 完成</option>
-        <option value="待修">⏳ 待修</option>
-      </select>
-    </label>
-    <label>說明：<textarea id="description"></textarea></label>
-    <label>Google Drive 圖片連結（可選）：<input type="text" id="image"></label>
-
-    <button type="submit">新增</button>
-    <button type="button" onclick="hideForm()">取消</button>
-  </form>
-</div>
-
-<!-- 瀑布流排版區 -->
-<div class="masonry" id="board">
-  <!-- 卡片會自動加進來 -->
-</div>
-
-<script src="script.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
