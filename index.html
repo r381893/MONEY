@@ -1,27 +1,35 @@
 <div class="form-container v2">
   <h2>新增細項 V2</h2>
   <form>
-    <label for="time">時間：</label>
-    <input type="datetime-local" id="time" name="time">
+    <div class="form-group">
+      <label for="time">時間：</label>
+      <input type="datetime-local" id="time" name="time">
+    </div>
 
-    <label for="content">內容：</label>
-    <textarea id="content" name="content" placeholder="填寫內容" rows="5"></textarea>
+    <div class="form-group">
+      <label for="content">內容：</label>
+      <textarea id="content" name="content" placeholder="填寫內容" rows="5"></textarea>
+    </div>
 
-    <label for="category">類別：</label>
-    <select id="category" name="category">
-      <option value="冷氣">冷氣</option>
-      <option value="天車">天車</option>
-      <option value="空壓機">空壓機</option>
-      <option value="消防系統">消防系統</option>
-      <option value="水系統">水系統</option>
-      <option value="工作母機">工作母機</option>
-      <option value="堆高機與升空車">堆高機與升空車</option>
-      <option value="一般鉗工">一般鉗工</option>
-      <option value="電銲">電銲</option>
-    </select>
+    <div class="form-group">
+      <label for="category">類別：</label>
+      <select id="category" name="category">
+        <option value="冷氣">冷氣</option>
+        <option value="天車">天車</option>
+        <option value="空壓機">空壓機</option>
+        <option value="消防系統">消防系統</option>
+        <option value="水系統">水系統</option>
+        <option value="工作母機">工作母機</option>
+        <option value="堆高機與升空車">堆高機與升空車</option>
+        <option value="一般鉗工">一般鉗工</option>
+        <option value="電銲">電銲</option>
+      </select>
+    </div>
 
-    <label for="person">人物：</label>
-    <input type="text" id="person" name="person" placeholder="填寫人物">
+    <div class="form-group">
+      <label for="person">人物：</label>
+      <input type="text" id="person" name="person" placeholder="填寫人物">
+    </div>
 
     <div class="button-group">
       <button type="submit" class="save-btn">✅ 儲存</button>
