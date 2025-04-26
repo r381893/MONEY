@@ -3,34 +3,40 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>維修記錄牆 v8</title>
-  <link rel="stylesheet" href="style.css">
+  <title>維修紀錄牆 v9 (Padlet風格)</title>
+  <style>
+    body { margin: 0; font-family: 'Noto Sans TC', sans-serif; background: #f1f1f1; }
+    header { text-align: center; background: #ffffff; padding: 1em; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+    .container { display: flex; flex-wrap: wrap; gap: 1em; justify-content: center; padding: 1em; }
+    .card { background: #ffffff; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); padding: 1em; width: 280px; display: flex; flex-direction: column; word-break: break-word; }
+    .card img { width: 100%; height: auto; margin-top: 0.5em; border-radius: 6px; }
+    .card p, .card h3 { margin: 0.5em 0; }
+    .card [contenteditable] { outline: 1px dashed transparent; }
+    .card [contenteditable]:focus { outline-color: #4caf50; background: #e8f5e9; }
+    .add-btn { margin: 1em auto; padding: 0.8em 1.5em; background-color: #4caf50; color: white; font-weight: bold; border: none; border-radius: 6px; cursor: pointer; }
+    .modal { display: none; position: fixed; z-index: 10; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); }
+    .modal-content { background: #fff; padding: 1.5em; max-width: 400px; margin: 10vh auto; border-radius: 10px; }
+    .modal-content label { display: block; margin: 0.6em 0; }
+    .modal-content input, textarea { width: 100%; padding: 0.4em; margin-top: 0.2em; border-radius: 5px; border: 1px solid #ccc; }
+    .btn-group { text-align: right; margin-top: 1em; }
+    .btn-group button { margin-left: 0.5em; padding: 0.5em 1em; border: none; border-radius: 5px; background-color: #4caf50; color: white; cursor: pointer; }
+  </style>
 </head>
 <body>
   <header>
-    <h1>維修記錄牆 v8</h1>
-    <p>支援展開/收合、圖片自動轉換、LocalStorage</p>
+    <h1>維修紀錄牆 v9</h1>
+    <p>仿Padlet風格．支援圖片/儲存/編輯</p>
   </header>
 
-  <div class="board-container">
-    <div class="board" id="board"></div>
-  </div>
+  <button class="add-btn" onclick="openModal()">➕ 新增紀錄</button>
+  <div class="container" id="container"></div>
 
   <div class="modal" id="modal">
     <div class="modal-content">
-      <h2>➕ 新增維修紀錄</h2>
+      <h2>新增紀錄</h2>
       <form id="recordForm">
-        <input type="hidden" id="targetCategory">
-        <label>子項目名稱：<input type="text" id="item" required></label>
-        <label>日期：<input type="date" id="date" required></label>
-        <label>地點：<input type="text" id="location"></label>
-        <label>處理人員：<input type="text" id="person"></label>
-        <label>狀態：
-          <select id="status">
-            <option value="✅ 完成">✅ 完成</option>
-            <option value="⏳ 待修">⏳ 待修</option>
-          </select>
-        </label>
+        <label>項目名稱：<input type="text" id="title" required></label>
+        <label>日期：<input type="date" id="date"></label>
         <label>說明：<textarea id="description" rows="3"></textarea></label>
         <label>圖片網址：<input type="text" id="image"></label>
         <div class="btn-group">
@@ -42,123 +48,65 @@
   </div>
 
   <script>
-    const categories = [
-      "冷氣", "天車", "空壓機", "消防系統", "水系統",
-      "工作母機", "堆高機與升空車", "一般鉗工", "電銲"
-    ];
-    const board = document.getElementById('board');
-    const localKey = 'maintenanceCards';
-
-    categories.forEach(cat => {
-      const column = document.createElement('div');
-      column.className = 'column';
-      column.id = cat;
-      column.innerHTML = `
-        <h2>${cat}</h2>
-        <button class="add-btn" onclick="openModal('${cat}')">➕ 新增紀錄</button>
-        <div class="card-container"></div>
-      `;
-      board.appendChild(column);
-    });
-
-    function openModal(category) {
-      document.getElementById('targetCategory').value = category;
-      document.getElementById('modal').style.display = 'block';
-      document.getElementById('date').valueAsDate = new Date();
-    }
-
-    function closeModal() {
-      document.getElementById('modal').style.display = 'none';
-      document.getElementById('recordForm').reset();
-    }
+    const container = document.getElementById('container');
+    const localKey = 'padletStyleCards';
 
     function transformDriveURL(url) {
       const match = url.match(/\/d\/(.*?)\//);
       return match ? `https://drive.google.com/uc?id=${match[1]}` : url;
     }
 
+    function openModal() {
+      document.getElementById('modal').style.display = 'block';
+      document.getElementById('recordForm').reset();
+      document.getElementById('date').valueAsDate = new Date();
+    }
+
+    function closeModal() {
+      document.getElementById('modal').style.display = 'none';
+    }
+
     function saveCards() {
-      const allCards = {};
-      categories.forEach(cat => {
-        const cards = document.querySelectorAll(`#${cat} .card-container .card`);
-        allCards[cat] = Array.from(cards).map(card => ({ html: card.outerHTML }));
-      });
-      localStorage.setItem(localKey, JSON.stringify(allCards));
+      const cards = Array.from(document.querySelectorAll('.container .card')).map(card => ({
+        html: card.innerHTML
+      }));
+      localStorage.setItem(localKey, JSON.stringify(cards));
     }
 
     function loadCards() {
-      const saved = JSON.parse(localStorage.getItem(localKey) || '{}');
-      categories.forEach(cat => {
-        const container = document.querySelector(`#${cat} .card-container`);
-        if (saved[cat]) {
-          saved[cat].forEach(c => {
-            const temp = document.createElement('div');
-            temp.innerHTML = c.html;
-            container.appendChild(temp.firstChild);
-          });
-        }
+      const saved = JSON.parse(localStorage.getItem(localKey) || '[]');
+      saved.forEach(c => {
+        const temp = document.createElement('div');
+        temp.className = 'card';
+        temp.innerHTML = c.html;
+        container.appendChild(temp);
       });
     }
 
     document.getElementById('recordForm').addEventListener('submit', function(e) {
       e.preventDefault();
-      const category = document.getElementById('targetCategory').value;
-      const item = document.getElementById('item').value;
+      const title = document.getElementById('title').value;
       const date = document.getElementById('date').value;
-      const location = document.getElementById('location').value;
-      const person = document.getElementById('person').value;
-      const status = document.getElementById('status').value;
       const description = document.getElementById('description').value;
       let image = transformDriveURL(document.getElementById('image').value);
 
       const card = document.createElement('div');
       card.className = 'card';
       card.innerHTML = `
-        <p><strong>項目：</strong><span contenteditable="true">${item}</span></p>
-        <p><strong>狀態：</strong><span contenteditable="true">${status}</span></p>
-        <button class="toggle-btn">🔽 展開</button>
-        <div class="details" style="display: none;">
-          <p><strong>日期：</strong><span contenteditable="true">${date}</span></p>
-          <p><strong>地點：</strong><span contenteditable="true">${location}</span></p>
-          <p><strong>人員：</strong><span contenteditable="true">${person}</span></p>
-          <p><strong>說明：</strong><span contenteditable="true">${description}</span></p>
-          ${image ? `<img src="${image}" alt="圖片">` : ''}
-        </div>
+        <h3 contenteditable="true">${title}</h3>
+        ${date ? `<p contenteditable="true">🗓️ ${date}</p>` : ''}
+        ${description ? `<p contenteditable="true">${description}</p>` : ''}
+        ${image ? `<img src="${image}" alt="圖片">` : ''}
       `;
 
-      card.querySelector('.toggle-btn').onclick = function () {
-        const d = card.querySelector('.details');
-        d.style.display = d.style.display === 'none' ? 'block' : 'none';
-        this.textContent = d.style.display === 'none' ? '🔽 展開' : '🔼 收合';
-      };
-
-      document.querySelector(`#${category} .card-container`).prepend(card);
+      container.prepend(card);
       saveCards();
       closeModal();
     });
 
     document.addEventListener('input', () => saveCards());
+
     loadCards();
   </script>
-
-  <style>
-    body { margin: 0; font-family: 'Noto Sans TC', sans-serif; background: #eeeeee; }
-    header { text-align: center; background: #fff; padding: 1em; box-shadow: 0 2px 6px rgba(0,0,0,0.05); }
-    .board-container { overflow-x: auto; padding: 1em; }
-    .board { display: flex; gap: 1em; min-width: 1000px; }
-    .column { background: #fff; border-radius: 10px; padding: 1em; min-width: 300px; flex-shrink: 0; box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
-    .add-btn { margin: 0.5em auto 1em auto; padding: 0.5em; background: #009688; color: #fff; border: none; border-radius: 6px; cursor: pointer; width: 90%; }
-    .card { background: #fdfdfd; border-radius: 10px; padding: 0.8em; box-shadow: 0 1px 4px rgba(0,0,0,0.1); margin-bottom: 1em; }
-    .card img { width: 100%; max-height: 150px; object-fit: cover; border-radius: 5px; margin-top: 0.5em; }
-    .card [contenteditable] { outline: 1px dashed transparent; padding: 0 4px; border-radius: 4px; }
-    .card [contenteditable]:focus { outline-color: #009688; background: #e0f2f1; }
-    .modal { display: none; position: fixed; z-index: 10; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); }
-    .modal-content { background: #fff; padding: 1.5em; max-width: 500px; margin: 8vh auto; border-radius: 10px; }
-    .modal-content label { display: block; margin: 0.6em 0; }
-    .modal-content input, textarea, select { width: 100%; padding: 0.4em; margin-top: 0.2em; border-radius: 5px; border: 1px solid #ccc; }
-    .btn-group { text-align: right; margin-top: 1em; }
-    .btn-group button { margin-left: 0.5em; padding: 0.4em 1em; border: none; border-radius: 5px; background-color: #00796b; color: white; cursor: pointer; }
-    .toggle-btn { margin-top: 0.5em; padding: 0.3em 0.8em; border: none; background: #ccc; color: #333; border-radius: 4px; cursor: pointer; font-size: 0.9em; }
-  </style>
 </body>
 </html>
