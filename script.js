@@ -1,20 +1,19 @@
 let editingId = null;
 
-// 點擊 "新增細項" 按鈕
+// 按 新增細項
 document.getElementById('addCardBtn').addEventListener('click', () => {
   editingId = null;
   document.getElementById('formTitle').innerText = '新增細項';
-  document.getElementById('cardFormContainer').classList.remove('hidden');
   clearForm();
+  showForm();
 });
 
-// 點擊 "取消" 按鈕
+// 按 取消
 document.getElementById('cancelCardBtn').addEventListener('click', () => {
-  clearForm();
-  document.getElementById('cardFormContainer').classList.add('hidden');
+  hideForm();
 });
 
-// 點擊 "儲存" 按鈕
+// 按 儲存
 document.getElementById('saveCardBtn').addEventListener('click', () => {
   const time = document.getElementById('cardTime').value;
   const content = document.getElementById('cardContent').value.trim();
@@ -29,27 +28,34 @@ document.getElementById('saveCardBtn').addEventListener('click', () => {
   let cards = getCards();
 
   if (editingId) {
-    const cardIndex = cards.findIndex(c => c.id === editingId);
-    if (cardIndex !== -1) {
-      cards[cardIndex] = { id: editingId, time, content, category, person };
+    const index = cards.findIndex(c => c.id === editingId);
+    if (index !== -1) {
+      cards[index] = { id: editingId, time, content, category, person };
     }
   } else {
-    const newCard = {
+    cards.push({
       id: Date.now(),
       time,
       content,
       category,
       person
-    };
-    cards.push(newCard);
+    });
   }
 
   saveCards(cards);
   renderCards();
-
-  clearForm();
-  document.getElementById('cardFormContainer').classList.add('hidden');
+  hideForm(); // 儲存後隱藏表單
 });
+
+// 顯示表單
+function showForm() {
+  document.getElementById('cardFormContainer').classList.remove('hidden');
+}
+
+// 隱藏表單
+function hideForm() {
+  document.getElementById('cardFormContainer').classList.add('hidden');
+}
 
 // 清空表單
 function clearForm() {
@@ -59,36 +65,27 @@ function clearForm() {
   document.getElementById('cardPerson').value = '';
 }
 
-// 取得 localStorage 中的卡片
+// 取得資料
 function getCards() {
-  const data = localStorage.getItem('cards');
-  if (data) {
-    try {
-      return JSON.parse(data);
-    } catch (e) {
-      console.error('資料解析錯誤，自動清空', e);
-      localStorage.removeItem('cards');
-      return [];
-    }
+  try {
+    return JSON.parse(localStorage.getItem('cards')) || [];
+  } catch {
+    return [];
   }
-  return [];
 }
 
-// 儲存卡片到 localStorage
+// 儲存資料
 function saveCards(cards) {
   localStorage.setItem('cards', JSON.stringify(cards));
 }
 
-// 渲染卡片到畫面上
+// 渲染卡片
 function renderCards() {
   const cards = getCards();
-  document.getElementById('board').querySelectorAll('.column').forEach(col => col.querySelector('.cardList').innerHTML = '');
-
-  // 找出所有不同分類
-  const categories = Array.from(new Set(cards.map(c => c.category)));
-
-  // 先清空 board，再依分類重新畫
   document.getElementById('board').innerHTML = '';
+
+  const categories = [...new Set(cards.map(c => c.category))];
+
   categories.forEach(category => {
     const column = document.createElement('div');
     column.className = 'column';
@@ -125,7 +122,7 @@ function editCard(id) {
     document.getElementById('cardContent').value = card.content;
     document.getElementById('cardCategory').value = card.category;
     document.getElementById('cardPerson').value = card.person;
-    document.getElementById('cardFormContainer').classList.remove('hidden');
+    showForm();
   }
 }
 
@@ -139,7 +136,7 @@ function deleteCard(id) {
   }
 }
 
-// 格式化時間
+// 時間格式化
 function formatTime(timeString) {
   const d = new Date(timeString);
   if (!isNaN(d)) {
@@ -149,5 +146,5 @@ function formatTime(timeString) {
   return timeString;
 }
 
-// 頁面載入時初始化
+// 初始化
 renderCards();
