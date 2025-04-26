@@ -2,47 +2,52 @@
 .form-container.v2 {
   max-width: 400px;
   margin: 20px auto;
-  background: #fff;
+  background: #ffffff;
   padding: 20px;
   border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
 
 .form-container.v2 h2 {
-  font-size: 20px;
-  margin-bottom: 15px;
+  font-size: 22px;
   font-weight: bold;
+  margin-bottom: 20px;
 }
 
-.form-container.v2 label {
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
   display: block;
-  margin-top: 10px;
   margin-bottom: 5px;
+  font-weight: 600;
 }
 
-.form-container.v2 input,
-.form-container.v2 select,
-.form-container.v2 textarea {
+.form-group input,
+.form-group select,
+.form-group textarea {
   width: 100%;
   padding: 10px;
-  margin-bottom: 10px;
   font-size: 16px;
   border: 1px solid #ccc;
   border-radius: 5px;
+  box-sizing: border-box;
 }
 
-.form-container.v2 textarea {
+textarea {
   resize: vertical;
 }
 
 .button-group {
   display: flex;
   justify-content: space-between;
-  margin-top: 10px;
+  margin-top: 20px;
 }
 
 .save-btn, .cancel-btn {
-  padding: 8px 16px;
+  width: 48%;
+  padding: 10px;
   font-size: 16px;
   border: none;
   border-radius: 5px;
@@ -63,12 +68,15 @@
 @media (max-width: 480px) {
   .form-container.v2 {
     width: 90%;
-    padding: 15px;
+  }
+
+  .button-group {
+    flex-direction: column;
   }
 
   .save-btn, .cancel-btn {
-    width: 48%;
-    font-size: 14px;
+    width: 100%;
+    margin-bottom: 10px;
   }
 }
 /* === V2 樣式結束 === */
