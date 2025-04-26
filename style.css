@@ -1,37 +1,133 @@
-<!DOCTYPE html>
-<html lang="zh-TW">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>維修記錄牆（可編輯刪除分類）</title>
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-  <header>
-    <h1>🛠️ 維修記錄牆</h1>
-    <button id="addCategoryBtn">➕ 新增分類</button>
-    <button id="addCardBtn">➕ 新增細項</button>
-  </header>
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: linear-gradient(#d4f1f9, #a2d9f5);
+}
 
-  <main id="board"></main>
+header {
+  background: #4fb0e5;
+  padding: 10px;
+  color: white;
+  text-align: center;
+}
 
-  <!-- 新增/編輯細項的表單 -->
-  <div id="cardFormContainer" class="hidden">
-    <div class="cardForm">
-      <h2 id="formTitle">新增細項</h2>
-      <label>時間：<input type="datetime-local" id="cardTime"></label>
-      <label>內容：<input type="text" id="cardContent" placeholder="填寫內容"></label>
-      <label>類別：
-        <select id="cardCategory"></select>
-      </label>
-      <label>人物：<input type="text" id="cardPerson" placeholder="填寫人物"></label>
-      <div class="formButtons">
-        <button id="saveCardBtn">✅ 儲存</button>
-        <button id="cancelCardBtn">❌ 取消</button>
-      </div>
-    </div>
-  </div>
+#addCategoryBtn, #addCardBtn {
+  margin: 5px;
+  padding: 8px 16px;
+  font-size: 16px;
+  cursor: pointer;
+}
 
-  <script src="script.js"></script>
-</body>
-</html>
+#board {
+  display: flex;
+  padding: 10px;
+  overflow-x: auto;
+}
+
+.column {
+  background: #ffffffcc;
+  border-radius: 10px;
+  padding: 10px;
+  margin: 10px;
+  min-width: 250px;
+  flex: 0 0 auto;
+}
+
+.columnHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.column h2 {
+  text-align: center;
+  color: #4fb0e5;
+  margin: 0;
+}
+
+.cardList {
+  margin-top: 10px;
+}
+
+.card {
+  background: #fff;
+  border: 1px solid #ccc;
+  margin-bottom: 10px;
+  padding: 10px;
+  border-radius: 8px;
+  position: relative;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.card .cardContent {
+  font-size: 14px;
+  margin-bottom: 5px;
+}
+
+.card .cardFooter {
+  font-size: 12px;
+  color: #666;
+}
+
+.card button {
+  position: absolute;
+  top: 5px;
+  background: none;
+  border: none;
+  font-size: 14px;
+  cursor: pointer;
+  padding: 2px 5px;
+}
+
+.card button:first-of-type {
+  right: 35px; /* 編輯按鈕稍微靠左一點 */
+}
+
+.card button:last-of-type {
+  right: 5px; /* 刪除按鈕靠最右 */
+}
+
+#cardFormContainer {
+  display: none;
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.5);
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+#cardFormContainer.show {
+  display: flex;
+}
+
+.cardForm {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  width: 300px;
+}
+
+.cardForm label {
+  display: block;
+  margin: 10px 0;
+}
+
+.cardForm input, .cardForm select {
+  width: 100%;
+  padding: 5px;
+}
+
+.formButtons {
+  text-align: center;
+  margin-top: 10px;
+}
+
+.hidden {
+  display: none;
+}
+
+.columnButtons {
+  display: flex;
+  gap: 5px;
+}
