@@ -1,18 +1,15 @@
 let editingId = null;
 
-// 點新增
 document.getElementById('addCardBtn').addEventListener('click', () => {
   editingId = null;
   clearForm();
   showForm();
 });
 
-// 點取消
 document.getElementById('cancelCardBtn').addEventListener('click', () => {
   hideForm();
 });
 
-// 點儲存
 document.getElementById('saveCardBtn').addEventListener('click', () => {
   const time = document.getElementById('cardTime').value;
   const content = document.getElementById('cardContent').value.trim();
@@ -46,9 +43,21 @@ document.getElementById('saveCardBtn').addEventListener('click', () => {
   hideForm();
 });
 
-// 基本功能
+document.getElementById('addCategoryBtn').addEventListener('click', () => {
+  const newCategory = prompt('請輸入新的分類名稱：');
+  if (newCategory) {
+    let categories = getCategories();
+    if (!categories.includes(newCategory)) {
+      categories.push(newCategory);
+      saveCategories(categories);
+      renderCards();
+    }
+  }
+});
+
 function showForm() {
   document.getElementById('cardFormContainer').classList.add('show');
+  updateCategoryOptions();
 }
 
 function hideForm() {
@@ -58,7 +67,7 @@ function hideForm() {
 function clearForm() {
   document.getElementById('cardTime').value = '';
   document.getElementById('cardContent').value = '';
-  document.getElementById('cardCategory').value = '冷氣';
+  document.getElementById('cardCategory').value = '';
   document.getElementById('cardPerson').value = '';
 }
 
@@ -74,9 +83,31 @@ function saveCards(cards) {
   localStorage.setItem('cards', JSON.stringify(cards));
 }
 
+function getCategories() {
+  try {
+    return JSON.parse(localStorage.getItem('categories')) || ["冷氣", "天車", "消防系統", "水系統", "空壓機", "一般鉗工"];
+  } catch {
+    return ["冷氣", "天車", "消防系統", "水系統", "空壓機", "一般鉗工"];
+  }
+}
+
+function saveCategories(categories) {
+  localStorage.setItem('categories', JSON.stringify(categories));
+}
+
 function renderCards() {
   const cards = getCards();
-  document.querySelectorAll('.cardList').forEach(list => list.innerHTML = '');
+  const categories = getCategories();
+  const board = document.getElementById('board');
+  board.innerHTML = '';
+
+  categories.forEach(category => {
+    const column = document.createElement('div');
+    column.className = 'column';
+    column.dataset.category = category;
+    column.innerHTML = `<h2>${category}</h2><div class="cardList"></div>`;
+    board.appendChild(column);
+  });
 
   cards.forEach(card => {
     const cardEl = document.createElement('div');
@@ -93,6 +124,12 @@ function renderCards() {
     const column = document.querySelector(`.column[data-category="${card.category}"] .cardList`);
     if (column) column.appendChild(cardEl);
   });
+}
+
+function updateCategoryOptions() {
+  const categories = getCategories();
+  const select = document.getElementById('cardCategory');
+  select.innerHTML = categories.map(c => `<option value="${c}">${c}</option>`).join('');
 }
 
 function editCard(id) {
