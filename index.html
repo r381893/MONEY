@@ -1,69 +1,72 @@
 <!DOCTYPE html>
-<html lang="zh-TW">
+<html lang="zh-Hant">
 <head>
   <meta charset="UTF-8">
-  <title>📋 我的紀錄板 (JSONP 版)</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style>
-    body { font-family: 'Noto Sans TC', sans-serif; background: #f9f9ff; padding: 2rem; }
-    textarea { width: 100%; height: 100px; padding: 10px; font-size: 1rem; }
-    button { margin-top: 10px; padding: 10px 20px; font-size: 1rem;
-             background: #6c63ff; color: #fff; border: none; border-radius: 5px; cursor: pointer; }
-    h1,h2 { color: #333; }
-    ul { list-style: none; padding: 0; }
-    li { background: #fff; padding: 10px; margin: 10px 0;
-         border-left: 5px solid #6c63ff; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
-  </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>維修工作記錄牆</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>📋 我的紀錄板 (JSONP 版)</h1>
-  <textarea id="noteInput" placeholder="請輸入紀錄..."></textarea><br>
-  <button id="saveBtn">儲存紀錄</button>
 
-  <h2>🕘 歷史紀錄</h2>
-  <ul id="recordList">載入中...</ul>
+<div class="header">
+  <h1>維修工作記錄牆</h1>
+  <p>記錄日常維修與工作處理</p>
+</div>
 
-  <script>
-    // ← 替換成你最新部署的 Web App URL
-    const API = 'https://script.google.com/macros/s/AKfycbxWYBbOsFTxwrArwQLNOqMJcWOMHHe-fqBGtqXgcvy2o7dMyShe2PLS5AL8jKs1WesD/exec';
+<div class="controls">
+  <button onclick="showForm()">➕ 新增工作記錄</button>
+</div>
 
-    // JSONP callback：把後端回傳的陣列渲染到 <ul>
-    function renderNotes(data) {
-      const ul = document.getElementById('recordList');
-      ul.innerHTML = '';
-      data.forEach(item => {
-        const li = document.createElement('li');
-        li.textContent = `[${item.date} ${item.time}] ${item.content}`;
-        ul.appendChild(li);
-      });
-    }
+<!-- 新增卡片表單（隱藏中） -->
+<div id="formContainer" style="display:none;">
+  <h2>新增工作記錄</h2>
+  <form id="recordForm">
+    <label>分類：
+      <select id="category" required>
+        <option value="">請選擇</option>
+        <option value="冷氣">冷氣</option>
+        <option value="天車">天車</option>
+        <option value="空壓機">空壓機</option>
+        <option value="消防系統">消防系統</option>
+        <option value="水系統">水系統</option>
+        <option value="工作母機">工作母機</option>
+        <option value="堆高機與升空車">堆高機與升空車</option>
+        <option value="一般鉗工">一般鉗工</option>
+        <option value="電銲">電銲</option>
+      </select>
+    </label>
+    <label>項目：<input type="text" id="item" required></label>
+    <label>日期：<input type="date" id="date" required></label>
+    <label>地點：<input type="text" id="location"></label>
+    <label>處理人員：<input type="text" id="person"></label>
+    <label>狀態：
+      <select id="status">
+        <option value="完成">✅ 完成</option>
+        <option value="待修">⏳ 待修</option>
+      </select>
+    </label>
+    <label>說明：<textarea id="description"></textarea></label>
+    <label>Google Drive 圖片連結（可選）：<input type="text" id="image"></label>
 
-    // 讀取資料：動態插 <script> 呼叫 doGet
-    function loadNotes() {
-      const s = document.createElement('script');
-      s.src = API + '?callback=renderNotes';
-      document.body.appendChild(s);
-    }
+    <button type="submit">新增</button>
+    <button type="button" onclick="hideForm()">取消</button>
+  </form>
+</div>
 
-    // JSONP callback：寫入完成後呼叫，清空輸入並重載列表
-    function afterSave() {
-      document.getElementById('noteInput').value = '';
-      loadNotes();
-    }
+<!-- 主看板 -->
+<div class="board" id="board">
+  <!-- 各分類欄位 -->
+  <div class="column" id="冷氣"><h2>冷氣</h2></div>
+  <div class="column" id="天車"><h2>天車</h2></div>
+  <div class="column" id="空壓機"><h2>空壓機</h2></div>
+  <div class="column" id="消防系統"><h2>消防系統</h2></div>
+  <div class="column" id="水系統"><h2>水系統</h2></div>
+  <div class="column" id="工作母機"><h2>工作母機</h2></div>
+  <div class="column" id="堆高機與升空車"><h2>堆高機與升空車</h2></div>
+  <div class="column" id="一般鉗工"><h2>一般鉗工</h2></div>
+  <div class="column" id="電銲"><h2>電銲</h2></div>
+</div>
 
-    // 儲存一筆：把 content 丟到 URL，callback 設 afterSave
-    document.getElementById('saveBtn').onclick = () => {
-      const txt = document.getElementById('noteInput').value.trim();
-      if (!txt) return alert('請輸入內容');
-      const s = document.createElement('script');
-      s.src = API
-            + '?callback=afterSave'
-            + '&content=' + encodeURIComponent(txt);
-      document.body.appendChild(s);
-    };
-
-    // 頁面載入時先讀一次
-    window.onload = loadNotes;
-  </script>
+<script src="script.js"></script>
 </body>
 </html>
