@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>維修記錄牆 v7</title>
+  <title>維修記錄牆 v8</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <header>
-    <h1>維修記錄牆 v7</h1>
-    <p>支援圖片顯示、自動儲存、卡片可編輯</p>
+    <h1>維修記錄牆 v8</h1>
+    <p>支援展開/收合、圖片自動轉換、LocalStorage</p>
   </header>
 
   <div class="board-container">
@@ -46,7 +46,6 @@
       "冷氣", "天車", "空壓機", "消防系統", "水系統",
       "工作母機", "堆高機與升空車", "一般鉗工", "電銲"
     ];
-
     const board = document.getElementById('board');
     const localKey = 'maintenanceCards';
 
@@ -82,9 +81,7 @@
       const allCards = {};
       categories.forEach(cat => {
         const cards = document.querySelectorAll(`#${cat} .card-container .card`);
-        allCards[cat] = Array.from(cards).map(card => ({
-          html: card.innerHTML
-        }));
+        allCards[cat] = Array.from(cards).map(card => ({ html: card.outerHTML }));
       });
       localStorage.setItem(localKey, JSON.stringify(allCards));
     }
@@ -95,10 +92,9 @@
         const container = document.querySelector(`#${cat} .card-container`);
         if (saved[cat]) {
           saved[cat].forEach(c => {
-            const card = document.createElement('div');
-            card.className = 'card';
-            card.innerHTML = c.html;
-            container.appendChild(card);
+            const temp = document.createElement('div');
+            temp.innerHTML = c.html;
+            container.appendChild(temp.firstChild);
           });
         }
       });
@@ -106,7 +102,6 @@
 
     document.getElementById('recordForm').addEventListener('submit', function(e) {
       e.preventDefault();
-
       const category = document.getElementById('targetCategory').value;
       const item = document.getElementById('item').value;
       const date = document.getElementById('date').value;
@@ -120,31 +115,34 @@
       card.className = 'card';
       card.innerHTML = `
         <p><strong>項目：</strong><span contenteditable="true">${item}</span></p>
-        <p><strong>日期：</strong><span contenteditable="true">${date}</span></p>
-        <p><strong>地點：</strong><span contenteditable="true">${location}</span></p>
-        <p><strong>人員：</strong><span contenteditable="true">${person}</span></p>
         <p><strong>狀態：</strong><span contenteditable="true">${status}</span></p>
-        <p><strong>說明：</strong><span contenteditable="true">${description}</span></p>
-        ${image ? `<img src="${image}" alt="圖片">` : ''}
+        <button class="toggle-btn">🔽 展開</button>
+        <div class="details" style="display: none;">
+          <p><strong>日期：</strong><span contenteditable="true">${date}</span></p>
+          <p><strong>地點：</strong><span contenteditable="true">${location}</span></p>
+          <p><strong>人員：</strong><span contenteditable="true">${person}</span></p>
+          <p><strong>說明：</strong><span contenteditable="true">${description}</span></p>
+          ${image ? `<img src="${image}" alt="圖片">` : ''}
+        </div>
       `;
 
-      const container = document.querySelector(`#${category} .card-container`);
-      container.prepend(card);
+      card.querySelector('.toggle-btn').onclick = function () {
+        const d = card.querySelector('.details');
+        d.style.display = d.style.display === 'none' ? 'block' : 'none';
+        this.textContent = d.style.display === 'none' ? '🔽 展開' : '🔼 收合';
+      };
+
+      document.querySelector(`#${category} .card-container`).prepend(card);
       saveCards();
       closeModal();
     });
 
-    // 自動儲存 on edit
-    document.addEventListener('input', () => {
-      saveCards();
-    });
-
+    document.addEventListener('input', () => saveCards());
     loadCards();
   </script>
+
   <style>
-    body {
-      margin: 0; font-family: 'Noto Sans TC', sans-serif; background: #eeeeee;
-    }
+    body { margin: 0; font-family: 'Noto Sans TC', sans-serif; background: #eeeeee; }
     header { text-align: center; background: #fff; padding: 1em; box-shadow: 0 2px 6px rgba(0,0,0,0.05); }
     .board-container { overflow-x: auto; padding: 1em; }
     .board { display: flex; gap: 1em; min-width: 1000px; }
@@ -160,6 +158,7 @@
     .modal-content input, textarea, select { width: 100%; padding: 0.4em; margin-top: 0.2em; border-radius: 5px; border: 1px solid #ccc; }
     .btn-group { text-align: right; margin-top: 1em; }
     .btn-group button { margin-left: 0.5em; padding: 0.4em 1em; border: none; border-radius: 5px; background-color: #00796b; color: white; cursor: pointer; }
+    .toggle-btn { margin-top: 0.5em; padding: 0.3em 0.8em; border: none; background: #ccc; color: #333; border-radius: 4px; cursor: pointer; font-size: 0.9em; }
   </style>
 </body>
 </html>
