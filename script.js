@@ -10,7 +10,7 @@ const categories = [
   "電銲"
 ];
 
-// 建立各分類欄
+// 建立分類欄位
 const board = document.getElementById('board');
 categories.forEach(cat => {
   const column = document.createElement('div');
@@ -18,13 +18,12 @@ categories.forEach(cat => {
   column.id = cat;
   column.innerHTML = `
     <h2>${cat}</h2>
-    <button class="add-btn" onclick="openModal('${cat}')">➕ 新增</button>
+    <button class="add-btn" onclick="openModal('${cat}')">➕ 新增紀錄</button>
     <div class="card-container"></div>
   `;
   board.appendChild(column);
 });
 
-// 開啟表單
 function openModal(category) {
   document.getElementById('targetCategory').value = category;
   document.getElementById('modal').style.display = 'block';
@@ -36,7 +35,6 @@ function closeModal() {
   document.getElementById('recordForm').reset();
 }
 
-// 新增卡片
 document.getElementById('recordForm').addEventListener('submit', function(e) {
   e.preventDefault();
 
@@ -47,7 +45,13 @@ document.getElementById('recordForm').addEventListener('submit', function(e) {
   const person = document.getElementById('person').value;
   const status = document.getElementById('status').value;
   const description = document.getElementById('description').value;
-  const image = document.getElementById('image').value;
+  let image = document.getElementById('image').value;
+
+  // ⛏️ 自動轉換 Google Drive 分享網址
+  const match = image.match(/\/d\/(.*?)\//);
+  if (match) {
+    image = `https://drive.google.com/uc?id=${match[1]}`;
+  }
 
   const card = document.createElement('div');
   card.className = 'card';
@@ -61,6 +65,7 @@ document.getElementById('recordForm').addEventListener('submit', function(e) {
     ${image ? `<img src="${image}" alt="圖片">` : ''}
   `;
 
-  document.querySelector(`#${category} .card-container`).prepend(card);
+  const container = document.querySelector(`#${category} .card-container`);
+  container.prepend(card);
   closeModal();
 });
