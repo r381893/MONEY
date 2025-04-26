@@ -10,7 +10,7 @@ const categories = [
   "電銲"
 ];
 
-// 生成九大類欄位
+// 建立各分類欄
 const board = document.getElementById('board');
 categories.forEach(cat => {
   const column = document.createElement('div');
@@ -18,13 +18,13 @@ categories.forEach(cat => {
   column.id = cat;
   column.innerHTML = `
     <h2>${cat}</h2>
-    <button class="add-btn" onclick="openModal('${cat}')">➕ 新增紀錄</button>
+    <button class="add-btn" onclick="openModal('${cat}')">➕ 新增</button>
     <div class="card-container"></div>
   `;
   board.appendChild(column);
 });
 
-// 彈出視窗
+// 開啟表單
 function openModal(category) {
   document.getElementById('targetCategory').value = category;
   document.getElementById('modal').style.display = 'block';
@@ -52,16 +52,15 @@ document.getElementById('recordForm').addEventListener('submit', function(e) {
   const card = document.createElement('div');
   card.className = 'card';
   card.innerHTML = `
-    <p><strong>項目：</strong>${item}</p>
-    <p><strong>日期：</strong>${date}</p>
-    <p><strong>地點：</strong>${location}</p>
-    <p><strong>人員：</strong>${person}</p>
-    <p><strong>狀態：</strong>${status}</p>
-    <p><strong>說明：</strong>${description}</p>
+    <p><strong>項目：</strong><span contenteditable="true">${item}</span></p>
+    <p><strong>日期：</strong><span contenteditable="true">${date}</span></p>
+    <p><strong>地點：</strong><span contenteditable="true">${location}</span></p>
+    <p><strong>人員：</strong><span contenteditable="true">${person}</span></p>
+    <p><strong>狀態：</strong><span contenteditable="true">${status}</span></p>
+    <p><strong>說明：</strong><span contenteditable="true">${description}</span></p>
     ${image ? `<img src="${image}" alt="圖片">` : ''}
   `;
 
-  const container = document.querySelector(`#${category} .card-container`);
-  container.prepend(card); // 最新資料放最上面
+  document.querySelector(`#${category} .card-container`).prepend(card);
   closeModal();
 });
