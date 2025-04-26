@@ -1,5 +1,8 @@
 let editingId = null;
 
+// 初始化畫面
+renderCards();
+
 document.getElementById('addCardBtn').addEventListener('click', () => {
   editingId = null;
   clearForm();
@@ -55,15 +58,18 @@ document.getElementById('addCategoryBtn').addEventListener('click', () => {
   }
 });
 
+// 顯示表單
 function showForm() {
   document.getElementById('cardFormContainer').classList.add('show');
   updateCategoryOptions();
 }
 
+// 隱藏表單
 function hideForm() {
   document.getElementById('cardFormContainer').classList.remove('show');
 }
 
+// 清空表單
 function clearForm() {
   document.getElementById('cardTime').value = '';
   document.getElementById('cardContent').value = '';
@@ -71,6 +77,7 @@ function clearForm() {
   document.getElementById('cardPerson').value = '';
 }
 
+// 取得卡片資料
 function getCards() {
   try {
     return JSON.parse(localStorage.getItem('cards')) || [];
@@ -79,10 +86,12 @@ function getCards() {
   }
 }
 
+// 儲存卡片資料
 function saveCards(cards) {
   localStorage.setItem('cards', JSON.stringify(cards));
 }
 
+// 取得分類資料
 function getCategories() {
   try {
     return JSON.parse(localStorage.getItem('categories')) || ["冷氣", "天車", "消防系統", "水系統", "空壓機", "一般鉗工"];
@@ -91,15 +100,30 @@ function getCategories() {
   }
 }
 
+// 儲存分類資料
 function saveCategories(categories) {
   localStorage.setItem('categories', JSON.stringify(categories));
 }
 
+// 更新分類下拉選單
+function updateCategoryOptions() {
+  const categories = getCategories();
+  const select = document.getElementById('cardCategory');
+  select.innerHTML = categories.map(c => `<option value="${c}">${c}</option>`).join('');
+}
+
+// 畫出卡片和分類
 function renderCards() {
   const cards = getCards();
-  const categories = getCategories();
+  let categories = getCategories();
   const board = document.getElementById('board');
   board.innerHTML = '';
+
+  // 沒分類時，預設一組
+  if (categories.length === 0) {
+    categories = ["冷氣", "天車", "消防系統", "水系統", "空壓機", "一般鉗工"];
+    saveCategories(categories);
+  }
 
   categories.forEach(category => {
     const column = document.createElement('div');
@@ -124,12 +148,6 @@ function renderCards() {
     const column = document.querySelector(`.column[data-category="${card.category}"] .cardList`);
     if (column) column.appendChild(cardEl);
   });
-}
-
-function updateCategoryOptions() {
-  const categories = getCategories();
-  const select = document.getElementById('cardCategory');
-  select.innerHTML = categories.map(c => `<option value="${c}">${c}</option>`).join('');
 }
 
 function editCard(id) {
@@ -162,5 +180,3 @@ function formatTime(timeString) {
   }
   return timeString;
 }
-
-renderCards();
