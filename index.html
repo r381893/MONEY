@@ -1,36 +1,100 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>🛠️ 工作記錄牆 V1</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>🛠️ 工作紀錄牆</title>
   <style>
-    body { font-family: Arial, sans-serif; background: #f9f9f9; margin: 0; padding: 15px; }
-    h1 { text-align: center; }
-    .controls { text-align: center; margin-bottom: 20px; }
-    #newCategory { width: 60%; padding: 8px; }
-    button { padding: 8px 12px; margin: 5px; cursor: pointer; }
-    .category { background: white; border-radius: 10px; padding: 10px; margin-bottom: 15px; }
-    .header { display: flex; justify-content: space-between; align-items: center; }
-    .item { background: #eee; border-radius: 5px; padding: 8px; margin-top: 8px; }
-    .item input { width: 100%; padding: 5px; margin-top: 4px; }
-    @media (max-width:600px){ #newCategory { width: 100%; }}
+    body {
+      font-family: "Noto Sans TC", sans-serif;
+      background: #f0f2f5;
+      margin: 0;
+      padding: 1rem;
+    }
+    .container {
+      max-width: 800px;
+      margin: auto;
+      background: #fff;
+      padding: 1.5rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+    label {
+      display: block;
+      margin-top: 1rem;
+      font-weight: bold;
+    }
+    input {
+      width: 100%;
+      padding: 0.5rem;
+      margin-top: 0.3rem;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+    button {
+      width: 100%;
+      padding: 0.75rem;
+      margin-top: 1rem;
+      background-color: #3498db;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #2980b9;
+    }
+    .record {
+      background: #ecf0f1;
+      padding: 1rem;
+      margin-top: 1rem;
+      border-radius: 8px;
+      position: relative;
+    }
+    .delete-btn {
+      position: absolute;
+      right: 10px;
+      top: 10px;
+      background: #e74c3c;
+      border: none;
+      padding: 4px 8px;
+      color: white;
+      border-radius: 4px;
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
 
-<h1>🛠️ 工作記錄牆 V1</h1>
+<div class="container">
+  <h1>🛠️ 工作紀錄牆</h1>
+  <form id="recordForm">
+    <label>分類
+      <input type="text" id="category" required />
+    </label>
+    <label>指數
+      <input type="number" id="index" required />
+    </label>
+    <label>履約價
+      <input type="number" id="strike" required />
+    </label>
+    <label>成交價
+      <input type="number" id="price" required />
+    </label>
+    <label>圖片連結（可留空）
+      <input type="text" id="image" />
+    </label>
+    <button type="submit">新增紀錄</button>
+  </form>
 
-<div class="controls">
-  <input id="newCategory" placeholder="新增分類…">
-  <button onclick="addCategory()">新增分類</button>
-  <button onclick="saveAll()">💾 儲存到表單</button>
-  <button onclick="clearAll()">🧹 清空資料</button>
+  <div id="recordList"></div>
 </div>
 
-<div id="wall"></div>
-
 <script src="script.js"></script>
-
 </body>
 </html>
