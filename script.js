@@ -1,5 +1,5 @@
 const wall = document.getElementById('wall');
-const SHEET_URL = 'https://script.google.com/macros/s/AKfycbxJqXhXs-6mhSWFhX5KIuWrJQg9BbaHJA5kTYRFnCwS_K74XGlciw05MaO444MRrkE8HA/exec';
+const SHEET_URL = 'https://script.google.com/macros/s/AKfycbxuI83sSBNXdNRf_x0_wVgcVNYLwHXCnMKXQ_Qh9LiUvUGg3Kh_R9lmpVBd27Lssguk6A/exec';
 
 // 頁面載入時還原 LocalStorage
 window.onload = function() {
