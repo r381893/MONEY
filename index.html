@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>🛠️ 工作紀錄牆</title>
   <style>
     body {
@@ -12,7 +12,7 @@
       padding: 1rem;
     }
     .container {
-      max-width: 800px;
+      max-width: 600px;
       margin: auto;
       background: #fff;
       padding: 1.5rem;
@@ -49,23 +49,11 @@
     button:hover {
       background-color: #2980b9;
     }
-    .record {
-      background: #ecf0f1;
-      padding: 1rem;
+    .message {
       margin-top: 1rem;
-      border-radius: 8px;
-      position: relative;
-    }
-    .delete-btn {
-      position: absolute;
-      right: 10px;
-      top: 10px;
-      background: #e74c3c;
-      border: none;
-      padding: 4px 8px;
-      color: white;
-      border-radius: 4px;
-      cursor: pointer;
+      text-align: center;
+      font-size: 1rem;
+      color: green;
     }
   </style>
 </head>
@@ -73,28 +61,39 @@
 
 <div class="container">
   <h1>🛠️ 工作紀錄牆</h1>
-  <form id="recordForm">
+  <form id="recordForm" target="dummyframe" action="https://script.google.com/macros/s/AKfycbycbUsHv6XwUib6c8uNVHu9a_Id66_GOCsHvLuuzUI5VbCgVnVpk9iyJ1EF1ebRwqDI3w/exec" method="POST">
     <label>分類
-      <input type="text" id="category" required />
+      <input type="text" name="category" required />
     </label>
     <label>指數
-      <input type="number" id="index" required />
+      <input type="number" name="index" required />
     </label>
     <label>履約價
-      <input type="number" id="strike" required />
+      <input type="number" name="strike" required />
     </label>
     <label>成交價
-      <input type="number" id="price" required />
+      <input type="number" name="price" required />
     </label>
     <label>圖片連結（可留空）
-      <input type="text" id="image" />
+      <input type="text" name="image" />
     </label>
     <button type="submit">新增紀錄</button>
   </form>
 
-  <div id="recordList"></div>
+  <div class="message" id="message"></div>
+  <iframe name="dummyframe" style="display:none;" onload="showMessage()"></iframe>
 </div>
 
-<script src="script.js"></script>
+<script>
+function showMessage() {
+  const message = document.getElementById('message');
+  message.textContent = "✅ 已成功新增紀錄！";
+  setTimeout(() => {
+    message.textContent = "";
+    document.getElementById('recordForm').reset();
+  }, 2000);
+}
+</script>
+
 </body>
 </html>
