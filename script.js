@@ -1,5 +1,5 @@
 const wall = document.getElementById('wall');
-const API_URL = 'https://script.google.com/macros/s/AKfycbxHLJ6yVK-vd2E5vpvsOgEK4RCbBMg2ZXpWuM70-2RMvv3j5IM-yN3zhMhj9ilFD15MWw/exec'; // ⚡記得換成你的 Web App URL！
+const API_URL = 'https://script.google.com/macros/s/AKfycbxHLJ6yVK-vd2E5vpvsOgEK4RCbBMg2ZXpWuM70-2RMvv3j5IM-yN3zhMhj9ilFD15MWw/exec'; // ⚡請換成你自己的！
 
 // 初始化載入資料
 fetch(`${API_URL}?action=get`)
@@ -74,7 +74,7 @@ function removeItem(btn){
   if(confirm('確定刪除細項？'))btn.closest('.item').remove();
 }
 
-// 收集並儲存（改用 GET 傳）
+// 收集並儲存（🔥用POST傳）
 function saveAll(){
   const data=[];
   document.querySelectorAll('.category').forEach(cat=>{
@@ -92,11 +92,17 @@ function saveAll(){
     data.push({name:cat.querySelector('h3').innerText,items});
   });
 
-  fetch(`${API_URL}?action=save&data=${encodeURIComponent(JSON.stringify(data))}`)
-    .then(res => res.text())
-    .then(res => {
-      alert('✅ 已成功儲存到表單');
-    });
+  fetch(`${API_URL}?action=save`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(data)
+  })
+  .then(res => res.text())
+  .then(res => {
+    alert('✅ 已成功儲存到表單');
+  });
 }
 
 // 清空資料
