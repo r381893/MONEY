@@ -3,8 +3,9 @@ const SHEET_URL = 'https://script.google.com/macros/s/AKfycbxJqXhXs-6mhSWFhX5KIu
 
 // 頁面載入時讀取 LocalStorage
 window.onload = function() {
-  if (localStorage.getItem('workWall')) {
-    wall.innerHTML = localStorage.getItem('workWall');
+  const saved = localStorage.getItem('workWall');
+  if (saved) {
+    wall.innerHTML = saved;
   }
 };
 
@@ -99,7 +100,6 @@ function saveToGoogle() {
     data.push({ name: categoryName, items });
   });
 
-  // 用 form 方式傳送，避免 CORS 問題
   const form = document.createElement('form');
   form.action = SHEET_URL;
   form.method = 'POST';
