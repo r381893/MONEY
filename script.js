@@ -95,7 +95,7 @@ function getAllData() {
 function saveToGoogle() {
   const data = getAllData();
 
-  fetch('你的AppsScript網址', {
+  fetch('https://script.google.com/macros/s/AKfycbxJqXhXs-6mhSWFhX5KIuWrJQg9BbaHJA5kTYRFnCwS_K74XGlciw05MaO444MRrkE8HA/exec', {
     method: 'POST',
     body: JSON.stringify(data),
     headers: { 'Content-Type': 'application/json' }
