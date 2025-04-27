@@ -1,5 +1,5 @@
 const wall = document.getElementById('wall');
-const API_URL = '你的 Google Apps Script Web App URL'; // ⚡替換成你的網址！
+const API_URL = 'https://script.google.com/macros/s/AKfycbxHLJ6yVK-vd2E5vpvsOgEK4RCbBMg2ZXpWuM70-2RMvv3j5IM-yN3zhMhj9ilFD15MWw/exec'; // ⚡替換成你的網址！
 
 // 初始化載入資料
 fetch(`${API_URL}?action=get`)
