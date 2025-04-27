@@ -1,115 +1,59 @@
-const wall = document.getElementById('wall');
-const API_URL = 'https://script.google.com/macros/s/AKfycbxHLJ6yVK-vd2E5vpvsOgEK4RCbBMg2ZXpWuM70-2RMvv3j5IM-yN3zhMhj9ilFD15MWw/exec'; // ⚡請換成你自己的！
+const API_URL = '你的Google Apps Script Web App網址'; // ⚡請記得換成你的！
 
-// 初始化載入資料
-fetch(`${API_URL}?action=get`)
-  .then(res => res.json())
-  .then(data => renderData(data));
+document.addEventListener('DOMContentLoaded', () => {
+  loadRecords();
+});
 
-// 渲染分類與細項
-function renderData(data){
-  wall.innerHTML='';
-  data.forEach(cat=>{
-    const div=addCategoryDiv(cat.name);
-    cat.items.forEach(item=>addItemDiv(div.querySelector('.items'),item));
-  });
-}
+document.getElementById('recordForm').addEventListener('submit', async e => {
+  e.preventDefault();
 
-// 新增分類
-function addCategory(){
-  const name=document.getElementById('newCategory').value.trim();
-  if(!name)return;
-  addCategoryDiv(name);
-  document.getElementById('newCategory').value='';
-}
+  const now = new Date();
+  const data = {
+    category: document.getElementById('category').value,
+    time: now.toISOString().replace('T', ' ').substring(0, 19),
+    index: document.getElementById('index').value,
+    strike: document.getElementById('strike').value,
+    price: document.getElementById('price').value,
+    image: document.getElementById('image').value
+  };
 
-function addCategoryDiv(name){
-  const div=document.createElement('div');
-  div.className='category';
-  div.innerHTML=`
-    <div class="header">
-      <h3 contenteditable="true">${name}</h3>
-      <div>
-        <button onclick="addItem(this)">➕細項</button>
-        <button onclick="removeCategory(this)">🗑️刪除分類</button>
-      </div>
-    </div>
-    <div class="items"></div>`;
-  wall.appendChild(div);
-  return div;
-}
-
-// 新增細項
-function addItem(btn){
-  const itemsDiv=btn.closest('.category').querySelector('.items');
-  addItemDiv(itemsDiv,{
-    time:new Date().toLocaleString(),
-    index:'',
-    strike:'',
-    price:'',
-    image:''
-  });
-}
-
-function addItemDiv(container,item){
-  const div=document.createElement('div');
-  div.className='item';
-  div.innerHTML=`
-    <div>⏰${item.time}</div>
-    <input placeholder="指數" value="${item.index}">
-    <input placeholder="履約價" value="${item.strike}">
-    <input placeholder="成交價" value="${item.price}">
-    <input placeholder="圖片連結(可留空)" value="${item.image}">
-    <button onclick="removeItem(this)">❌刪除細項</button>`;
-  container.appendChild(div);
-}
-
-// 刪除分類
-function removeCategory(btn){
-  if(confirm('確定刪除分類？'))btn.closest('.category').remove();
-}
-
-// 刪除細項
-function removeItem(btn){
-  if(confirm('確定刪除細項？'))btn.closest('.item').remove();
-}
-
-// 收集並儲存（🔥用POST傳）
-function saveAll(){
-  const data=[];
-  document.querySelectorAll('.category').forEach(cat=>{
-    const items=[];
-    cat.querySelectorAll('.item').forEach(it=>{
-      const inputs=it.querySelectorAll('input');
-      items.push({
-        time:it.querySelector('div').innerText.replace('⏰','').trim(),
-        index:inputs[0].value,
-        strike:inputs[1].value,
-        price:inputs[2].value,
-        image:inputs[3].value
-      });
-    });
-    data.push({name:cat.querySelector('h3').innerText,items});
-  });
-
-  fetch(`${API_URL}?action=save`, {
+  await fetch(API_URL, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
     body: JSON.stringify(data)
-  })
-  .then(res => res.text())
-  .then(res => {
-    alert('✅ 已成功儲存到表單');
   });
+
+  document.getElementById('recordForm').reset();
+  loadRecords();
+});
+
+async function loadRecords() {
+  const res = await fetch(API_URL);
+  const records = await res.json();
+
+  const list = document.getElementById('recordList');
+  list.innerHTML = records.reverse().map((r, index) => {
+    return `
+      <div class="record">
+        <strong>${r.category}</strong><br/>
+        📅 ${r.time}<br/>
+        📈 指數：${r.index}<br/>
+        📍 履約價：${r.strike}<br/>
+        💰 成交價：${r.price}<br/>
+        ${r.image ? `<img src="${r.image}" width="100%">` : ''}
+        <button class="delete-btn" onclick="deleteRecord(${records.length - 1 - index})">🗑 刪除</button>
+      </div>
+    `;
+  }).join('');
 }
 
-// 清空資料
-function clearAll(){
-  if(confirm('⚠️確定清空全部資料？')){
-    wall.innerHTML='';
-    fetch(`${API_URL}?action=clear`)
-      .then(()=>alert('已清空'));
-  }
+async function deleteRecord(index) {
+  if (!confirm("確定要刪除這筆紀錄嗎？")) return;
+  const payload = { deleteIndex: index };
+
+  await fetch(API_URL, {
+    method: 'POST',
+    body: JSON.stringify(payload)
+  });
+
+  loadRecords();
 }
