@@ -1,5 +1,14 @@
 let wall = document.getElementById('wall');
 
+// 如果有存在 localStorage，先載入
+if (localStorage.getItem('workWall')) {
+  wall.innerHTML = localStorage.getItem('workWall');
+}
+
+// 監聽動態新增的元素
+wall.addEventListener('input', saveLocal);
+wall.addEventListener('click', saveLocal);
+
 function addCategory() {
   const categoryName = document.getElementById('newCategory').value.trim();
   if (categoryName === '') return;
@@ -20,40 +29,81 @@ function addCategory() {
 
   wall.appendChild(categoryDiv);
   document.getElementById('newCategory').value = '';
-
-  // TODO: 儲存到 Google Sheet
+  saveLocal();
 }
 
 function deleteCategory(btn) {
   if (confirm('確定刪除這個分類？')) {
     btn.closest('.category').remove();
-    // TODO: 更新 Google Sheet
+    saveLocal();
   }
 }
 
 function addItem(btn) {
   const itemsDiv = btn.closest('.category').querySelector('.items');
   
+  const now = new Date();
+  const timestamp = now.toLocaleString();
+
   const itemDiv = document.createElement('div');
   itemDiv.className = 'item';
   itemDiv.innerHTML = `
-    <input type="text" placeholder="輸入細項..." onchange="saveData()">
-    <input type="text" placeholder="圖片連結 (可選)" onchange="saveData()">
+    <div><strong>時間：</strong>${timestamp}</div>
+    <input type="text" placeholder="指數 (例: 19800)" onchange="saveLocal()">
+    <input type="text" placeholder="履約價 (例: 20000)" onchange="saveLocal()">
+    <input type="text" placeholder="成交價 (例: 85)" onchange="saveLocal()">
+    <input type="text" placeholder="圖片連結 (可選)" onchange="saveLocal()">
     <button onclick="deleteItem(this)">❌刪除細項</button>
   `;
 
   itemsDiv.appendChild(itemDiv);
-
-  // TODO: 儲存到 Google Sheet
+  saveLocal();
 }
 
 function deleteItem(btn) {
   if (confirm('確定刪除這個細項？')) {
     btn.closest('.item').remove();
-    // TODO: 更新 Google Sheet
+    saveLocal();
   }
 }
 
-function saveData() {
-  // TODO: 將目前資料整理並送到 Google Sheet
+function saveLocal() {
+  localStorage.setItem('workWall', wall.innerHTML);
+}
+
+function getAllData() {
+  const categories = [];
+  document.querySelectorAll('.category').forEach(category => {
+    const categoryName = category.querySelector('h3').innerText.trim();
+    const items = [];
+    category.querySelectorAll('.item').forEach(item => {
+      const fields = item.querySelectorAll('input');
+      const timeText = item.querySelector('div').innerText.replace('時間：', '').trim();
+      items.push({
+        time: timeText,
+        index: fields[0]?.value || '',
+        strike: fields[1]?.value || '',
+        price: fields[2]?.value || '',
+        image: fields[3]?.value || ''
+      });
+    });
+    categories.push({ name: categoryName, items });
+  });
+  return categories;
+}
+
+function saveToGoogle() {
+  const data = getAllData();
+
+  fetch('你的AppsScript網址', {
+    method: 'POST',
+    body: JSON.stringify(data),
+    headers: { 'Content-Type': 'application/json' }
+  }).then(res => res.text())
+    .then(txt => {
+      alert('儲存成功！');
+    }).catch(err => {
+      console.error(err);
+      alert('儲存失敗！');
+    });
 }
