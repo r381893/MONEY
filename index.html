@@ -3,132 +3,19 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>工作記錄牆 V1</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 20px;
-      background: #f0f0f0;
-    }
-    h1 {
-      text-align: center;
-    }
-    #categoryInput, #itemInput {
-      padding: 8px;
-      margin-right: 5px;
-      margin-bottom: 10px;
-    }
-    #addCategoryBtn, #addItemBtn {
-      padding: 8px 12px;
-      cursor: pointer;
-    }
-    .category {
-      background: white;
-      margin-bottom: 20px;
-      padding: 15px;
-      border-radius: 8px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    }
-    .category-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .category-title {
-      font-size: 18px;
-      font-weight: bold;
-    }
-    .delete-category {
-      background: red;
-      color: white;
-      border: none;
-      padding: 5px 10px;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-    .item {
-      background: #f9f9f9;
-      margin-top: 10px;
-      padding: 8px;
-      border-radius: 5px;
-    }
-  </style>
+  <title>工作紀錄牆 V1</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <h1>🛠️ 工作紀錄牆 V1</h1>
 
-  <h1>🛠️ 工作記錄牆 V1</h1>
-
-  <div>
-    <input type="text" id="categoryInput" placeholder="新增分類">
-    <button id="addCategoryBtn">新增分類</button>
+  <div class="controls">
+    <input type="text" id="newCategory" placeholder="新增分類...">
+    <button onclick="addCategory()">新增分類</button>
   </div>
 
-  <div id="categories"></div>
+  <div id="wall"></div>
 
-  <script>
-    const categoriesContainer = document.getElementById('categories');
-    const categoryInput = document.getElementById('categoryInput');
-    const addCategoryBtn = document.getElementById('addCategoryBtn');
-
-    addCategoryBtn.addEventListener('click', () => {
-      const categoryName = categoryInput.value.trim();
-      if (categoryName !== '') {
-        addCategory(categoryName);
-        categoryInput.value = '';
-      }
-    });
-
-    function addCategory(name) {
-      const categoryDiv = document.createElement('div');
-      categoryDiv.className = 'category';
-
-      const headerDiv = document.createElement('div');
-      headerDiv.className = 'category-header';
-
-      const title = document.createElement('div');
-      title.className = 'category-title';
-      title.innerText = name;
-
-      const deleteBtn = document.createElement('button');
-      deleteBtn.className = 'delete-category';
-      deleteBtn.innerText = '刪除';
-      deleteBtn.onclick = () => {
-        if (confirm(`確定要刪除分類「${name}」嗎？`)) {
-          categoriesContainer.removeChild(categoryDiv);
-        }
-      };
-
-      headerDiv.appendChild(title);
-      headerDiv.appendChild(deleteBtn);
-
-      const itemInput = document.createElement('input');
-      itemInput.type = 'text';
-      itemInput.placeholder = '新增細項';
-      itemInput.style.marginRight = '5px';
-      itemInput.style.marginTop = '10px';
-
-      const addItemBtn = document.createElement('button');
-      addItemBtn.innerText = '新增細項';
-      addItemBtn.style.marginTop = '10px';
-      addItemBtn.onclick = () => {
-        const itemText = itemInput.value.trim();
-        if (itemText !== '') {
-          const itemDiv = document.createElement('div');
-          itemDiv.className = 'item';
-          itemDiv.innerText = itemText;
-          categoryDiv.appendChild(itemDiv);
-          itemInput.value = '';
-        }
-      };
-
-      categoryDiv.appendChild(headerDiv);
-      categoryDiv.appendChild(itemInput);
-      categoryDiv.appendChild(addItemBtn);
-
-      categoriesContainer.appendChild(categoryDiv);
-    }
-  </script>
-
+  <script src="script.js"></script>
 </body>
 </html>
