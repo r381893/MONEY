@@ -94,9 +94,11 @@ function getAllData() {
 
 function saveToGoogle() {
   const data = getAllData();
+
   const form = document.createElement('form');
-  form.action = 'https://script.google.com/macros/s/AKfycbxJqXhXs-6mhSWFhX5KIuWrJQg9BbaHJA5kTYRFnCwS_K74XGlciw05MaO444MRrkE8HA/exec'; // ★你的 GAS 網址
+  form.action = 'https://script.google.com/macros/s/AKfycbxJqXhXs-6mhSWFhX5KIuWrJQg9BbaHJA5kTYRFnCwS_K74XGlciw05MaO444MRrkE8HA/exec';  // ★★★要填正確的 Web App URL
   form.method = 'POST';
+  form.target = '_blank'; // 可有可無，讓表單開新頁面
   form.style.display = 'none';
 
   const input = document.createElement('input');
