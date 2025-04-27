@@ -1,47 +1,38 @@
-let wall = document.getElementById('wall');
+const wall = document.getElementById('wall');
+const SHEET_URL = 'https://script.google.com/macros/s/AKfycbxJqXhXs-6mhSWFhX5KIuWrJQg9BbaHJA5kTYRFnCwS_K74XGlciw05MaO444MRrkE8HA/exec';
 
-// 如果有存在 localStorage，先載入
-if (localStorage.getItem('workWall')) {
-  wall.innerHTML = localStorage.getItem('workWall');
-}
+// 頁面載入時讀取 LocalStorage
+window.onload = function() {
+  if (localStorage.getItem('workWall')) {
+    wall.innerHTML = localStorage.getItem('workWall');
+  }
+};
 
-// 監聽動態新增的元素
-wall.addEventListener('input', saveLocal);
-wall.addEventListener('click', saveLocal);
-
+// 新增分類
 function addCategory() {
-  const categoryName = document.getElementById('newCategory').value.trim();
-  if (categoryName === '') return;
+  const name = document.getElementById('newCategory').value.trim();
+  if (!name) return;
 
   const categoryDiv = document.createElement('div');
   categoryDiv.className = 'category';
-
   categoryDiv.innerHTML = `
     <div class="category-header">
-      <h3 contenteditable="true">${categoryName}</h3>
+      <h3 contenteditable="true">${name}</h3>
       <div>
-        <button onclick="addItem(this)">➕細項</button>
-        <button onclick="deleteCategory(this)">🗑️刪除分類</button>
+        <button onclick="addItem(this)">➕ 細項</button>
+        <button onclick="deleteCategory(this)">🗑️ 刪除分類</button>
       </div>
     </div>
     <div class="items"></div>
   `;
-
   wall.appendChild(categoryDiv);
   document.getElementById('newCategory').value = '';
   saveLocal();
 }
 
-function deleteCategory(btn) {
-  if (confirm('確定刪除這個分類？')) {
-    btn.closest('.category').remove();
-    saveLocal();
-  }
-}
-
+// 新增細項
 function addItem(btn) {
   const itemsDiv = btn.closest('.category').querySelector('.items');
-  
   const now = new Date();
   const timestamp = now.toLocaleString();
 
@@ -49,30 +40,48 @@ function addItem(btn) {
   itemDiv.className = 'item';
   itemDiv.innerHTML = `
     <div><strong>時間：</strong>${timestamp}</div>
-    <input type="text" placeholder="指數 (例: 19800)" onchange="saveLocal()">
-    <input type="text" placeholder="履約價 (例: 20000)" onchange="saveLocal()">
-    <input type="text" placeholder="成交價 (例: 85)" onchange="saveLocal()">
+    <input type="text" placeholder="指數 (例：19800)" onchange="saveLocal()">
+    <input type="text" placeholder="履約價 (例：20000)" onchange="saveLocal()">
+    <input type="text" placeholder="成交價 (例：85)" onchange="saveLocal()">
     <input type="text" placeholder="圖片連結 (可選)" onchange="saveLocal()">
-    <button onclick="deleteItem(this)">❌刪除細項</button>
+    <button onclick="deleteItem(this)">❌ 刪除細項</button>
   `;
-
   itemsDiv.appendChild(itemDiv);
   saveLocal();
 }
 
+// 刪除分類
+function deleteCategory(btn) {
+  if (confirm('確定要刪除這個分類？')) {
+    btn.closest('.category').remove();
+    saveLocal();
+  }
+}
+
+// 刪除細項
 function deleteItem(btn) {
-  if (confirm('確定刪除這個細項？')) {
+  if (confirm('確定要刪除這個細項？')) {
     btn.closest('.item').remove();
     saveLocal();
   }
 }
 
+// 儲存 LocalStorage
 function saveLocal() {
   localStorage.setItem('workWall', wall.innerHTML);
 }
 
-function getAllData() {
-  const categories = [];
+// 清除 LocalStorage
+function clearLocal() {
+  if (confirm('確定要清除所有暫存資料？')) {
+    localStorage.removeItem('workWall');
+    location.reload();
+  }
+}
+
+// 儲存到 Google 表單
+function saveToGoogle() {
+  const data = [];
   document.querySelectorAll('.category').forEach(category => {
     const categoryName = category.querySelector('h3').innerText.trim();
     const items = [];
@@ -87,18 +96,14 @@ function getAllData() {
         image: fields[3]?.value || ''
       });
     });
-    categories.push({ name: categoryName, items });
+    data.push({ name: categoryName, items });
   });
-  return categories;
-}
 
-function saveToGoogle() {
-  const data = getAllData();
-
+  // 用 form 方式傳送，避免 CORS 問題
   const form = document.createElement('form');
-  form.action = 'https://script.google.com/macros/s/AKfycbxJqXhXs-6mhSWFhX5KIuWrJQg9BbaHJA5kTYRFnCwS_K74XGlciw05MaO444MRrkE8HA/exec';  // ★★★要填正確的 Web App URL
+  form.action = SHEET_URL;
   form.method = 'POST';
-  form.target = '_blank'; // 可有可無，讓表單開新頁面
+  form.target = '_blank';
   form.style.display = 'none';
 
   const input = document.createElement('input');
