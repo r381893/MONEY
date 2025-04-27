@@ -1,4 +1,4 @@
-const API_URL = '你的Google Apps Script Web App網址'; // ⚡請記得換成你的！
+const API_URL = 'https://script.google.com/macros/s/AKfycbycbUsHv6XwUib6c8uNVHu9a_Id66_GOCsHvLuuzUI5VbCgVnVpk9iyJ1EF1ebRwqDI3w/exec'; // ⚡請記得換成你的！
 
 document.addEventListener('DOMContentLoaded', () => {
   loadRecords();
