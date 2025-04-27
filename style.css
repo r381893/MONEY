@@ -1,7 +1,7 @@
 body {
   font-family: Arial, sans-serif;
   padding: 10px;
-  background: #f2f2f2;
+  background: #f9f9f9;
 }
 
 h1 {
@@ -17,11 +17,10 @@ h1 {
 #newCategory {
   width: 60%;
   padding: 10px;
-  margin-right: 5px;
 }
 
 button {
-  padding: 10px;
+  padding: 8px 12px;
   margin: 5px;
   cursor: pointer;
 }
@@ -41,9 +40,15 @@ button {
 
 .item {
   margin-top: 10px;
-  background: #f9f9f9;
+  background: #efefef;
   border-radius: 5px;
-  padding: 5px;
+  padding: 8px;
+}
+
+input[type="text"] {
+  width: 100%;
+  margin: 5px 0;
+  padding: 6px;
 }
 
 .item img {
