@@ -1,7 +1,8 @@
 body {
   font-family: Arial, sans-serif;
+  background: #f5f5f5;
   padding: 10px;
-  background: #f9f9f9;
+  margin: 0;
 }
 
 h1 {
@@ -17,19 +18,20 @@ h1 {
 #newCategory {
   width: 60%;
   padding: 10px;
+  margin-bottom: 10px;
 }
 
 button {
-  padding: 8px 12px;
+  padding: 8px 15px;
   margin: 5px;
   cursor: pointer;
 }
 
 .category {
   background: white;
-  border-radius: 8px;
-  margin: 10px 0;
+  border-radius: 10px;
   padding: 10px;
+  margin-bottom: 15px;
 }
 
 .category-header {
@@ -38,16 +40,20 @@ button {
   align-items: center;
 }
 
-.item {
+.items {
   margin-top: 10px;
-  background: #efefef;
-  border-radius: 5px;
-  padding: 8px;
 }
 
-input[type="text"] {
+.item {
+  background: #eaeaea;
+  border-radius: 5px;
+  padding: 10px;
+  margin-top: 10px;
+}
+
+.item input[type="text"] {
   width: 100%;
-  margin: 5px 0;
+  margin-top: 5px;
   padding: 6px;
 }
 
@@ -59,6 +65,5 @@ input[type="text"] {
 @media (max-width: 600px) {
   #newCategory {
     width: 100%;
-    margin-bottom: 10px;
   }
 }
