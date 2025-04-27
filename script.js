@@ -80,7 +80,7 @@ function clearLocal() {
   }
 }
 
-// 儲存到 Google 表單
+// 用 fetch 儲存到 Google 表單
 function saveToGoogle() {
   const data = [];
   document.querySelectorAll('.category').forEach(category => {
@@ -100,17 +100,20 @@ function saveToGoogle() {
     data.push({ name: categoryName, items });
   });
 
-  const form = document.createElement('form');
-  form.action = SHEET_URL;
-  form.method = 'POST';
-  form.target = '_blank';
-  form.style.display = 'none';
-
-  const input = document.createElement('input');
-  input.name = 'data';
-  input.value = JSON.stringify(data);
-  form.appendChild(input);
-
-  document.body.appendChild(form);
-  form.submit();
+  fetch(SHEET_URL, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'  // 這裡改成 application/json
+    },
+    body: JSON.stringify(data)
+  })
+  .then(response => response.text())
+  .then(text => {
+    alert('儲存成功');
+    console.log(text);
+  })
+  .catch(error => {
+    console.error('錯誤', error);
+    alert('儲存失敗');
+  });
 }
