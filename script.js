@@ -94,16 +94,16 @@ function getAllData() {
 
 function saveToGoogle() {
   const data = getAllData();
+  const form = document.createElement('form');
+  form.action = 'https://script.google.com/macros/s/AKfycbxJqXhXs-6mhSWFhX5KIuWrJQg9BbaHJA5kTYRFnCwS_K74XGlciw05MaO444MRrkE8HA/exec'; // ★你的 GAS 網址
+  form.method = 'POST';
+  form.style.display = 'none';
 
-  fetch('https://script.google.com/macros/s/AKfycbxJqXhXs-6mhSWFhX5KIuWrJQg9BbaHJA5kTYRFnCwS_K74XGlciw05MaO444MRrkE8HA/exec', {
-    method: 'POST',
-    body: JSON.stringify(data),
-    headers: { 'Content-Type': 'application/json' }
-  }).then(res => res.text())
-    .then(txt => {
-      alert('儲存成功！');
-    }).catch(err => {
-      console.error(err);
-      alert('儲存失敗！');
-    });
+  const input = document.createElement('input');
+  input.name = 'data';
+  input.value = JSON.stringify(data);
+  form.appendChild(input);
+
+  document.body.appendChild(form);
+  form.submit();
 }
